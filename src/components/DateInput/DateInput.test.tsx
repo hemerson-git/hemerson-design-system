@@ -3,6 +3,7 @@ import axe from "axe-core";
 import { useState } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { DateInput } from "./DateInput";
+import { Dialog } from "../Dialog/Dialog";
 import { parseTyped } from "./dates";
 
 beforeEach(() => {
@@ -249,5 +250,47 @@ describe("DateInput calendar", () => {
     const results = await axe.run(document.body, { runOnly: { type: "tag", values: ["wcag2a", "wcag2aa"] } });
 
     expect(results.violations.map((violation) => violation.id)).toEqual([]);
+  });
+});
+
+describe("DateInput in a dialog", () => {
+  function InDialog({ onClose }: { onClose: () => void }) {
+    return (
+      <Dialog open onClose={onClose} title="Novo boleto">
+        <DateInput label="Vencimento" defaultValue="2026-10-10" />
+      </Dialog>
+    );
+  }
+
+  it("closes only the calendar on Escape", () => {
+    const onClose = vi.fn();
+    render(<InDialog onClose={onClose} />);
+    openCalendar();
+
+    fireEvent.keyDown(document.activeElement!, { key: "Escape" });
+
+    expect(screen.queryByRole("dialog", { name: /Outubro/ })).toBeNull();
+    expect(onClose).not.toHaveBeenCalled();
+    expect(screen.getByRole("dialog", { name: "Novo boleto" })).toBeTruthy();
+  });
+
+  it("closes the dialog on the next Escape", () => {
+    const onClose = vi.fn();
+    render(<InDialog onClose={onClose} />);
+    openCalendar();
+
+    fireEvent.keyDown(document.activeElement!, { key: "Escape" });
+    fireEvent.keyDown(document.activeElement!, { key: "Escape" });
+
+    expect(onClose).toHaveBeenCalledTimes(1);
+  });
+
+  it("keeps focus inside the dialog on Tab", () => {
+    render(<InDialog onClose={() => {}} />);
+    openCalendar();
+
+    fireEvent.keyDown(document.activeElement!, { key: "Tab" });
+
+    expect(screen.getByRole("dialog", { name: "Novo boleto" }).contains(document.activeElement)).toBe(true);
   });
 });

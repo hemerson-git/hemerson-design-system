@@ -2,6 +2,7 @@ import { act, cleanup, fireEvent, render, screen } from "@testing-library/react"
 import { useState } from "react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { Dialog } from "./Dialog";
+import { Menu } from "../Menu/Menu";
 
 afterEach(cleanup);
 
@@ -113,5 +114,22 @@ describe("Dialog", () => {
 
     rerender(<Dialog open onClose={() => {}} title="Imprimir boletos" size="lg" />);
     expect(screen.getByRole("dialog").classList.contains("hds-dialog--lg")).toBe(true);
+  });
+});
+
+describe("Dialog with a menu inside", () => {
+  it("closes only the menu on Escape", () => {
+    const onClose = vi.fn();
+    render(
+      <Dialog open onClose={onClose} title="Editar boleto">
+        <Menu label="Mais" items={[{ label: "Duplicar" }]} />
+      </Dialog>
+    );
+    fireEvent.click(screen.getByRole("button", { name: "Mais" }));
+
+    fireEvent.keyDown(document.activeElement!, { key: "Escape" });
+
+    expect(screen.queryByRole("menu")).toBeNull();
+    expect(onClose).not.toHaveBeenCalled();
   });
 });

@@ -175,7 +175,8 @@ export function DateInput({
   }
 
   function onPanelKeyDown(event: KeyboardEvent) {
-    if (event.key === "Escape") {
+    // Tab too: the calendar sits at the end of <body>, so focus goes back to the button's place
+    if (event.key === "Escape" || event.key === "Tab") {
       event.preventDefault();
       close(true);
     }
