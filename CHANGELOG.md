@@ -1,5 +1,11 @@
 # @hemerson/design-system
 
+## 0.6.0
+
+### Minor Changes
+
+- [#11](https://github.com/hemerson-git/hemerson-design-system/pull/11) [`7d855f3`](https://github.com/hemerson-git/hemerson-design-system/commit/7d855f3f7d38a9e0547055f8b94771cef7c700fe) Thanks [@hemerson-git](https://github.com/hemerson-git)! - `Menu` takes a `header`: context shown above the actions, such as the signed-in account's name with its email in `<small>`. It is not an item, so focus and the arrow keys skip it, and screen readers hear it as the menu's description.
+
 ## 0.5.0
 
 ### Minor Changes
