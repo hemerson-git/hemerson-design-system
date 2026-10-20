@@ -1,5 +1,6 @@
 import { cleanup, render, screen, within } from "@testing-library/react";
 import { afterEach, describe, expect, it } from "vitest";
+import componentsCss from "../../styles/components.css?raw";
 import { Table, type TableColumn } from "./Table";
 
 afterEach(cleanup);
@@ -55,5 +56,30 @@ describe("Table", () => {
     render(<Table caption="Boletos" hideCaption columns={columns} rows={rows} />);
 
     expect(screen.getByText("Boletos", { selector: "caption" }).classList.contains("hds-visually-hidden")).toBe(true);
+  });
+
+  it("is solid by default and glass when asked", () => {
+    const { rerender } = render(<Table caption="Boletos" columns={columns} rows={rows} />);
+    expect(screen.getByRole("region").classList.contains("hds-glass")).toBe(false);
+
+    rerender(<Table caption="Boletos" columns={columns} rows={rows} glass />);
+    expect(screen.getByRole("region").classList.contains("hds-glass")).toBe(true);
+  });
+
+  it("drops the solid fill on glass and frosts the header instead", () => {
+    const sheet = new CSSStyleSheet();
+    sheet.replaceSync(componentsCss.replace(/@import[^;]+;/g, ""));
+    const declared = (element: Element, property: string) =>
+      Array.from(sheet.cssRules)
+        .filter((rule): rule is CSSStyleRule => rule instanceof CSSStyleRule && element.matches(rule.selectorText))
+        .map((rule) => rule.style.getPropertyValue(property))
+        .filter(Boolean);
+
+    render(<Table caption="Boletos" columns={columns} rows={rows} glass />);
+    const wrap = screen.getByRole("region");
+    const header = screen.getAllByRole("columnheader")[0];
+
+    expect(declared(wrap, "background")).not.toContain("var(--surface-raised)");
+    expect(declared(header, "backdrop-filter")).toContain("blur(12px)");
   });
 });

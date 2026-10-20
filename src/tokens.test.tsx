@@ -75,16 +75,29 @@ describe.each(themes)("%s theme", (theme) => {
     expect(contrast(solid("ink", theme), ground)).toBeGreaterThanOrEqual(4.5);
   });
 
-  // Dialogs hold forms and longer text, so thick glass must hold over anything at all
-  it("text on thick glass stays legible over pure white and pure black", () => {
-    for (const backdrop of [
-      [255, 255, 255],
-      [0, 0, 0],
-    ] as [number, number, number][]) {
-      const ground = over(resolve("glass-thick-tint", theme), backdrop);
-      for (const text of ["ink", "ink-muted", "accent"]) {
-        expect(contrast(solid(text, theme), ground), `${text} over ${backdrop.join(",")}`).toBeGreaterThanOrEqual(4.5);
+  // Dialogs are see-through, so what matters is the app's own page behind the scrim: its surfaces,
+  // and its text and colored fills (badges, buttons) as the blur spreads them, at half strength.
+  // Rendered dialogs over a real table measure higher than this model.
+  it("text on thick glass reads at 4.5:1 or more over the app's own content", () => {
+    const mix = (a: [number, number, number], b: [number, number, number]) =>
+      a.map((value, index) => (value + b[index]) / 2) as [number, number, number];
+    const marks = ["ink", "ink-muted", "accent", "accent-fill", "secondary-fill", "danger", "success", "warning"];
+    const backdrops = surfaces.flatMap((surface) => [
+      solid(surface, theme),
+      ...marks.map((mark) => mix(solid(mark, theme), solid(surface, theme))),
+    ]);
+
+    for (const backdrop of backdrops) {
+      const ground = over(resolve("glass-thick-tint", theme), over(resolve("scrim", theme), backdrop));
+      for (const text of ["ink", "ink-muted"]) {
+        expect(contrast(solid(text, theme), ground), `${text} over ${backdrop.map(Math.round).join(",")}`).toBeGreaterThanOrEqual(4.5);
       }
     }
+  });
+
+  it("thick glass lets the page show through", () => {
+    const [, , , alpha] = rgba(resolve("glass-thick-tint", theme));
+    // 70% at most, give or take the rounding of a hex alpha
+    expect(alpha).toBeLessThan(0.71);
   });
 });

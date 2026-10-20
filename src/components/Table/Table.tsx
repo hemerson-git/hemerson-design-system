@@ -23,6 +23,8 @@ export interface TableProps<Row> {
   /** Shown when there are no rows. Default "Nada para mostrar.". */
   empty?: ReactNode;
   maxHeight?: number | string;
+  /** Regular glass instead of a solid surface, for a table over the app's background rather than over other content. */
+  glass?: boolean;
   className?: string;
 }
 
@@ -31,7 +33,7 @@ function cellClass<Row>(column: TableColumn<Row>) {
   return column.align === "center" ? "hds-cell--center" : undefined;
 }
 
-/** A solid data table with a sticky header, roomy rows and aligned numbers. */
+/** A data table with a sticky header, roomy rows and aligned numbers, on a solid surface or on glass. */
 export function Table<Row extends object>({
   columns,
   rows,
@@ -40,11 +42,12 @@ export function Table<Row extends object>({
   hideCaption = false,
   empty = "Nada para mostrar.",
   maxHeight,
+  glass = false,
   className,
 }: TableProps<Row>) {
   return (
     <div
-      className={cx("hds-table-wrap", "hds-scroll", className)}
+      className={cx("hds-table-wrap", "hds-scroll", glass && "hds-glass hds-table-wrap--glass", className)}
       role="region"
       aria-label={caption}
       tabIndex={0}
