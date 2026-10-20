@@ -872,9 +872,9 @@ html[data-transparency="reduced"] .hds-glass::before {
   font-family: var(--font-sans);
 }
 
+/* Plain text flow, so the bold match stays inside the words it belongs to */
 .hds-typeahead-option {
-  display: flex;
-  align-items: center;
+  display: block;
   min-height: 36px;
   padding: var(--space-2) var(--space-3);
   border-radius: var(--space-1);
