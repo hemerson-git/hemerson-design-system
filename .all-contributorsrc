@@ -1,0 +1,31 @@
+{
+  "projectName": "hemerson-design-system",
+  "projectOwner": "hemerson-git",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "commitType": "docs",
+  "commitConvention": "angular",
+  "contributorsPerLine": 7,
+  "linkToUsage": false,
+  "contributors": [
+    {
+      "login": "hemerson-git",
+      "name": "Hemerson Oliveira",
+      "avatar_url": "https://avatars.githubusercontent.com/u/48595787?v=4",
+      "profile": "https://hemerson-dev.vercel.app/pt-BR",
+      "contributions": [
+        "code",
+        "design",
+        "doc",
+        "test",
+        "infra",
+        "maintenance"
+      ]
+    }
+  ]
+}

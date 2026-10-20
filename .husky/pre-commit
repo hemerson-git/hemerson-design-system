@@ -1,0 +1,3 @@
+npm run tokens
+npm run typecheck
+npm run lint

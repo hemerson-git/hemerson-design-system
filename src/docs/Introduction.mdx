@@ -1,0 +1,35 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+
+<Meta title="Introduction" />
+
+# Hemerson Design System
+
+Dark-first and quiet, with one sage-teal accent. Content sits on solid surfaces; the controls and navigation that float above it are made of liquid glass.
+
+Use the toolbar to switch between the **dark** and **light** themes, and to turn on **reduced transparency**, which makes every glass surface solid.
+
+## Principles
+
+- **Dark is home.** Design in dark first; light is its daylight counterpart, not an inversion.
+- **One accent.** The sage teal carries every primary action, link and selection.
+- **Glass floats, content doesn't.** Glass is for bars, sidebars, menus, dialogs, toasts and floating buttons. Cards, tables and forms are solid.
+- **Never glass on glass.** A selected item inside a glass bar uses a soft tint, not a second glass layer.
+- **Legible over anything.** Regular glass keeps text at 7:1 or better even over pure white or black; every text color meets 4.5:1 in both themes.
+- **Numbers are mono.** Amounts, codes and section indices use JetBrains Mono with tabular figures.
+
+## Using the package
+
+```bash
+npm install @hemerson/design-system
+```
+
+```tsx
+import "@hemerson/design-system/styles.css";
+import { Button } from "@hemerson/design-system";
+
+export function Toolbar() {
+  return <Button variant="primary">Novo boleto</Button>;
+}
+```
+
+Set `data-theme="dark"` or `data-theme="light"` on `<html>`. Set `data-transparency="reduced"` to turn glass solid, and offer that as a setting in your app.

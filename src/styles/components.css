@@ -1,0 +1,1060 @@
+/* Hemerson Design System: component styles. Every color, length and shadow
+   comes from tokens.css; the only literals are the -webkit-backdrop-filter
+   values, because Safari does not resolve custom properties there. */
+
+/* ---------- Base ---------- */
+
+.hds-root {
+  font-family: var(--font-sans);
+  color: var(--ink);
+  background: var(--surface);
+}
+
+:where([class^="hds-"], [class*=" hds-"]) {
+  box-sizing: border-box;
+}
+
+:where(.hds-btn, .hds-input, .hds-select, .hds-checkbox-input, .hds-segmented-option,
+  .hds-menu-item, .hds-sidebar-item, .hds-navbar-link, .hds-scroll):focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.hds-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.hds-icon {
+  flex: none;
+  width: 1em;
+  height: 1em;
+}
+
+/* ---------- Glass material ----------
+   Layer 1: solid, always readable. Layer 2: frosted glass where
+   backdrop-filter works. Layer 3: refraction, only when
+   enableGlassRefraction() marks <html data-glass-refraction> (Chromium). */
+
+.hds-glass {
+  position: relative;
+  color: var(--ink);
+  background: var(--glass-solid);
+  border: 1px solid var(--line);
+  border-top-color: var(--glass-rim);
+  box-shadow: var(--shadow-glass);
+}
+
+@supports ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+  .hds-glass {
+    background: linear-gradient(135deg, var(--glass-sheen), transparent 45%), var(--glass-regular-tint);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    backdrop-filter: var(--glass-blur);
+  }
+
+  .hds-glass--clear {
+    background: linear-gradient(135deg, var(--glass-sheen), transparent 45%), var(--glass-clear-tint);
+  }
+
+  .hds-glass--thick {
+    background: linear-gradient(135deg, var(--glass-sheen), transparent 45%), var(--glass-thick-tint);
+    -webkit-backdrop-filter: blur(20px) saturate(150%);
+    backdrop-filter: var(--glass-thick-blur);
+  }
+
+  .hds-glass--accent {
+    background: linear-gradient(135deg, var(--glass-accent-sheen), transparent 60%), var(--glass-accent-tint), var(--glass-regular-tint);
+    -webkit-backdrop-filter: blur(10px) saturate(180%);
+    backdrop-filter: var(--glass-accent-blur);
+  }
+}
+
+.hds-glass--accent {
+  border-color: var(--accent);
+  box-shadow: var(--shadow-glass), var(--shadow-glow);
+}
+
+html[data-glass-refraction] .hds-glass:not(.hds-glass--thick) {
+  backdrop-filter: blur(10px) url(#hds-glass-distortion) saturate(180%);
+}
+
+html[data-glass-refraction] .hds-glass--accent {
+  backdrop-filter: blur(6px) url(#hds-glass-distortion) saturate(200%);
+}
+
+/* Reduced transparency: the system setting, or the app's own setting */
+@media (prefers-reduced-transparency: reduce) {
+  html .hds-glass,
+  html[data-glass-refraction] .hds-glass:not(.hds-glass--thick) {
+    background: var(--glass-solid);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
+html[data-transparency="reduced"] .hds-glass,
+html[data-transparency="reduced"][data-glass-refraction] .hds-glass:not(.hds-glass--thick) {
+  background: var(--glass-solid);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+@media (prefers-contrast: more) {
+  .hds-glass {
+    border: 2px solid currentColor;
+  }
+}
+
+/* ---------- Button ---------- */
+
+.hds-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 40px;
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 700;
+  text-transform: uppercase;
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+  transition: opacity 150ms, background-color 150ms, color 150ms, filter 150ms;
+}
+
+.hds-btn .hds-icon {
+  font-size: 20px;
+}
+
+.hds-btn--sm {
+  min-height: 32px;
+  padding: var(--space-1) var(--space-3);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.hds-btn--sm .hds-icon {
+  font-size: 16px;
+}
+
+.hds-btn--lg {
+  min-height: 56px;
+  padding: var(--space-4);
+}
+
+.hds-btn--icon {
+  padding: 0;
+  aspect-ratio: 1;
+}
+
+.hds-btn--primary {
+  background: var(--accent-fill);
+  color: var(--on-accent);
+}
+
+.hds-btn--secondary {
+  background: var(--secondary-fill);
+  color: var(--on-secondary);
+}
+
+.hds-btn--danger {
+  background: var(--danger);
+  color: var(--on-danger);
+}
+
+.hds-btn--primary:hover,
+.hds-btn--secondary:hover,
+.hds-btn--danger:hover {
+  opacity: 0.8;
+}
+
+.hds-btn--ghost {
+  background: transparent;
+  color: var(--ink);
+}
+
+.hds-btn--ghost:hover {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.hds-btn--glass {
+  border-radius: var(--radius-full);
+}
+
+.hds-btn--glass:hover {
+  filter: brightness(1.15);
+}
+
+.hds-btn:disabled,
+.hds-btn[aria-disabled="true"] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.hds-btn[aria-busy="true"] {
+  cursor: progress;
+}
+
+/* ---------- Loading ---------- */
+
+.hds-loading {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--accent);
+}
+
+.hds-loading .hds-icon,
+.hds-spin {
+  animation: hds-spin 0.8s linear infinite;
+}
+
+.hds-loading--sm .hds-icon { font-size: 16px; }
+.hds-loading--md .hds-icon { font-size: 24px; }
+.hds-loading--lg .hds-icon { font-size: 32px; }
+
+@keyframes hds-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ---------- NavBar ---------- */
+
+.hds-navbar {
+  position: sticky;
+  top: var(--space-4);
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  width: 100%;
+  max-width: var(--content-max);
+  min-height: 56px;
+  margin-inline: auto;
+  padding: var(--space-2) var(--space-2) var(--space-2) var(--space-6);
+  border-radius: var(--radius-full);
+}
+
+.hds-navbar-title {
+  margin: 0;
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.hds-navbar-nav {
+  display: flex;
+  flex: 1;
+  gap: var(--space-1);
+  min-width: 0;
+  overflow-x: auto;
+}
+
+.hds-navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-left: auto;
+}
+
+.hds-navbar-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 0 var(--space-4);
+  border-radius: var(--radius-full);
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color 150ms, color 150ms;
+}
+
+.hds-navbar-link:hover {
+  color: var(--accent);
+}
+
+.hds-navbar-link[aria-current="page"] {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+/* ---------- Sidebar ---------- */
+
+.hds-sidebar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  width: var(--sidebar-width);
+  height: 100%;
+  padding: var(--space-3) 0;
+  border-width: 0 1px 0 0;
+}
+
+.hds-sidebar--floating {
+  height: auto;
+  border-width: 1px;
+  border-radius: var(--radius-full);
+}
+
+.hds-sidebar-items {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.hds-sidebar-footer {
+  margin-top: auto;
+}
+
+.hds-sidebar-item {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: transparent;
+  color: var(--ink);
+  font-size: 20px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 150ms, color 150ms;
+}
+
+.hds-sidebar-item:hover {
+  color: var(--accent);
+}
+
+.hds-sidebar-item[aria-current="page"] {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+/* ---------- SegmentedControl ---------- */
+
+.hds-segmented {
+  display: inline-flex;
+  position: relative;
+  padding: var(--space-1);
+  border-radius: var(--radius-full);
+}
+
+/* The thumb looks like accent glass but adds no second backdrop-filter:
+   glass is never stacked on glass. */
+.hds-segmented-thumb {
+  position: absolute;
+  top: var(--space-1);
+  bottom: var(--space-1);
+  left: var(--space-1);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, var(--glass-accent-sheen), transparent 60%), var(--glass-accent-tint);
+  box-shadow: var(--shadow-glow);
+  transition: transform 300ms ease-out;
+  pointer-events: none;
+}
+
+.hds-segmented-option {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  min-height: 32px;
+  padding: 0 var(--space-3);
+  border: 0;
+  border-radius: var(--radius-full);
+  background: transparent;
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  opacity: 0.75;
+  transition: opacity 300ms ease-out;
+}
+
+.hds-segmented-option:hover,
+.hds-segmented-option[aria-checked="true"] {
+  opacity: 1;
+}
+
+/* ---------- FloatingButton ---------- */
+
+.hds-fab {
+  position: fixed;
+  z-index: 10;
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  padding: 0;
+  border-radius: var(--radius-full);
+  color: var(--ink);
+  font-size: 24px;
+  cursor: pointer;
+  transition: filter 150ms;
+}
+
+.hds-fab:hover {
+  filter: brightness(1.25);
+}
+
+.hds-fab--bottom-right {
+  right: calc(var(--space-6) + env(safe-area-inset-right, 0px));
+  bottom: calc(var(--space-6) + env(safe-area-inset-bottom, 0px));
+}
+
+.hds-fab--bottom-left {
+  left: calc(var(--space-6) + env(safe-area-inset-left, 0px));
+  bottom: calc(var(--space-6) + env(safe-area-inset-bottom, 0px));
+}
+
+.hds-fab--top-right {
+  right: calc(var(--space-6) + env(safe-area-inset-right, 0px));
+  top: calc(var(--space-6) + env(safe-area-inset-top, 0px));
+}
+
+.hds-fab--top-left {
+  left: calc(var(--space-6) + env(safe-area-inset-left, 0px));
+  top: calc(var(--space-6) + env(safe-area-inset-top, 0px));
+}
+
+/* ---------- Menu ---------- */
+
+.hds-menu {
+  position: relative;
+  display: inline-block;
+}
+
+.hds-menu-panel {
+  position: absolute;
+  top: calc(100% + var(--space-2));
+  z-index: 30;
+  min-width: 176px;
+  padding: var(--space-1);
+  border-radius: var(--radius-lg);
+}
+
+.hds-menu-panel--start { left: 0; }
+.hds-menu-panel--end { right: 0; }
+
+.hds-menu-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+  min-height: 36px;
+  padding: var(--space-2) var(--space-3);
+  border: 0;
+  border-radius: var(--space-1);
+  background: transparent;
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+}
+
+.hds-menu-item .hds-icon {
+  font-size: 16px;
+}
+
+.hds-menu-item:hover,
+.hds-menu-item:focus-visible {
+  background: var(--accent-soft);
+}
+
+.hds-menu-item--danger {
+  color: var(--danger);
+}
+
+.hds-menu-separator {
+  height: 1px;
+  margin: var(--space-1) var(--space-2);
+  background: var(--line);
+}
+
+/* ---------- Dialog ---------- */
+
+.hds-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  padding: var(--space-4);
+  background: var(--scrim);
+}
+
+.hds-dialog {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  width: 100%;
+  max-width: 560px;
+  max-height: calc(100% - var(--space-8));
+  overflow: auto;
+  padding: var(--space-6);
+  border-radius: var(--radius-2xl);
+}
+
+.hds-dialog-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.hds-dialog-title {
+  margin: 0;
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 600;
+}
+
+.hds-dialog-description {
+  margin: var(--space-1) 0 0;
+  color: var(--ink-muted);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.hds-dialog-footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-2);
+}
+
+/* ---------- Toast ---------- */
+
+.hds-toast-region {
+  position: fixed;
+  left: 50%;
+  bottom: calc(var(--space-6) + env(safe-area-inset-bottom, 0px));
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  width: min(420px, calc(100% - var(--space-8)));
+  transform: translateX(-50%);
+}
+
+.hds-toast {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-3) var(--space-3) var(--space-4);
+  border-radius: var(--radius-2xl);
+  animation: hds-toast-in 300ms ease-out;
+}
+
+.hds-toast > .hds-icon {
+  margin-top: 2px;
+  font-size: 20px;
+}
+
+.hds-toast--success > .hds-icon { color: var(--success); }
+.hds-toast--warning > .hds-icon { color: var(--warning); }
+.hds-toast--danger > .hds-icon { color: var(--danger); }
+.hds-toast--neutral > .hds-icon { color: var(--accent); }
+
+.hds-toast-body {
+  flex: 1;
+  min-width: 0;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.hds-toast-title {
+  margin: 0;
+  font-weight: 700;
+}
+
+.hds-toast-description {
+  margin: 0;
+}
+
+@keyframes hds-toast-in {
+  from { opacity: 0; transform: translateY(var(--space-2)); }
+}
+
+/* ---------- Forms ---------- */
+
+.hds-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.hds-label {
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+}
+
+.hds-hint {
+  margin: 0;
+  color: var(--ink-muted);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.hds-error {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin: 0;
+  color: var(--danger);
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+}
+
+.hds-input,
+.hds-select {
+  width: 100%;
+  min-height: 40px;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-md);
+  background: var(--surface-sunken);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 24px;
+  transition: border-color 150ms;
+}
+
+.hds-input::placeholder {
+  color: var(--ink-muted);
+  opacity: 1;
+}
+
+.hds-input:hover,
+.hds-select:hover {
+  border-color: var(--accent);
+}
+
+.hds-input[aria-invalid="true"],
+.hds-select[aria-invalid="true"] {
+  border-color: var(--danger);
+}
+
+.hds-input:disabled,
+.hds-select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.hds-input--numeric {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.hds-select-wrap {
+  position: relative;
+}
+
+.hds-select {
+  -webkit-appearance: none;
+  appearance: none;
+  padding-right: var(--space-10);
+  cursor: pointer;
+}
+
+.hds-select-wrap > .hds-icon {
+  position: absolute;
+  top: 50%;
+  right: var(--space-3);
+  font-size: 16px;
+  color: var(--ink-muted);
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.hds-checkbox {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 24px;
+  cursor: pointer;
+}
+
+.hds-checkbox-control {
+  position: relative;
+  display: inline-grid;
+  flex: none;
+  width: 20px;
+  height: 20px;
+  margin-top: 2px;
+}
+
+.hds-checkbox-input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.hds-checkbox-box {
+  display: grid;
+  place-items: center;
+  border: 1.5px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface-sunken);
+  color: var(--on-accent);
+  font-size: 14px;
+  pointer-events: none;
+  transition: background-color 150ms, border-color 150ms;
+}
+
+.hds-checkbox-box .hds-icon {
+  opacity: 0;
+}
+
+.hds-checkbox-input:checked + .hds-checkbox-box {
+  border-color: var(--accent-fill);
+  background: var(--accent-fill);
+}
+
+.hds-checkbox-input:checked + .hds-checkbox-box .hds-icon {
+  opacity: 1;
+}
+
+.hds-checkbox-input:focus-visible + .hds-checkbox-box {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.hds-checkbox-input:disabled + .hds-checkbox-box {
+  opacity: 0.5;
+}
+
+.hds-checkbox-text {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---------- Card ---------- */
+
+.hds-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--surface-raised);
+  color: var(--ink);
+  box-shadow: var(--shadow-raised);
+}
+
+.hds-card--interactive {
+  transition: transform 200ms ease-out;
+}
+
+.hds-card--interactive:hover {
+  transform: scale(1.02);
+}
+
+.hds-card-media {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.hds-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-6);
+}
+
+.hds-card-eyebrow {
+  margin: 0;
+  color: var(--secondary);
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 700;
+  letter-spacing: 0.025em;
+  text-transform: uppercase;
+}
+
+.hds-card-title {
+  margin: 0;
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 600;
+}
+
+.hds-card-text {
+  color: var(--ink-muted);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.hds-card-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  padding: 0 var(--space-6) var(--space-6);
+}
+
+/* ---------- Badge ---------- */
+
+.hds-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-full);
+  color: var(--ink);
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.hds-badge .hds-icon {
+  font-size: 14px;
+}
+
+.hds-badge--neutral {
+  background: color-mix(in srgb, var(--ink) 8%, transparent);
+}
+
+.hds-badge--neutral .hds-icon { color: var(--ink-muted); }
+.hds-badge--accent { background: color-mix(in srgb, var(--accent) 14%, transparent); }
+.hds-badge--accent .hds-icon { color: var(--accent); }
+.hds-badge--success { background: color-mix(in srgb, var(--success) 14%, transparent); }
+.hds-badge--success .hds-icon { color: var(--success); }
+.hds-badge--warning { background: color-mix(in srgb, var(--warning) 14%, transparent); }
+.hds-badge--warning .hds-icon { color: var(--warning); }
+.hds-badge--danger { background: color-mix(in srgb, var(--danger) 14%, transparent); }
+.hds-badge--danger .hds-icon { color: var(--danger); }
+
+/* ---------- Table ---------- */
+
+.hds-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--surface-raised);
+}
+
+.hds-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.hds-table caption {
+  padding: var(--space-3) var(--space-4);
+  color: var(--ink-muted);
+  text-align: left;
+}
+
+.hds-table th {
+  position: sticky;
+  top: 0;
+  padding: var(--space-3) var(--space-4);
+  background: var(--surface-sunken);
+  color: var(--ink-muted);
+  font-weight: 600;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.hds-table td {
+  padding: var(--space-3) var(--space-4);
+  border-top: 1px solid var(--line);
+  vertical-align: middle;
+}
+
+.hds-table tbody tr {
+  transition: background-color 150ms;
+}
+
+.hds-table tbody tr:hover {
+  background: var(--accent-soft);
+}
+
+.hds-table .hds-cell--numeric {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.hds-table th.hds-cell--numeric {
+  font-family: var(--font-sans);
+  font-weight: 600;
+}
+
+.hds-table .hds-cell--center {
+  text-align: center;
+}
+
+.hds-table-empty {
+  padding: var(--space-8) var(--space-4);
+  color: var(--ink-muted);
+  text-align: center;
+}
+
+/* ---------- Layout and typography ---------- */
+
+.hds-container {
+  width: 100%;
+  max-width: var(--content-max);
+  margin-inline: auto;
+  padding: var(--space-20) var(--space-4);
+}
+
+@media (min-width: 768px) {
+  .hds-container--with-sidebar {
+    padding-left: calc(var(--sidebar-width) + var(--space-4));
+  }
+}
+
+.hds-section-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin: 0;
+  color: var(--ink);
+  font-size: 36px;
+  line-height: 40px;
+  font-weight: 700;
+  text-wrap: balance;
+}
+
+.hds-section-index {
+  color: color-mix(in srgb, var(--accent) 30%, transparent);
+  font-family: var(--font-mono);
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 700;
+  filter: drop-shadow(0 0 10px var(--accent));
+}
+
+.hds-separator {
+  flex: none;
+  background: var(--line-strong);
+}
+
+.hds-separator--horizontal {
+  width: 100%;
+  height: 1px;
+}
+
+.hds-separator--vertical {
+  width: 1px;
+  align-self: stretch;
+}
+
+.hds-scroll {
+  overflow: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--secondary-500) transparent;
+}
+
+.hds-scroll::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.hds-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.hds-scroll::-webkit-scrollbar-thumb {
+  border: 2px solid var(--surface);
+  border-radius: var(--radius-full);
+  background-color: var(--secondary-500);
+}
+
+.hds-scroll::-webkit-scrollbar-thumb:hover {
+  background-color: var(--primary-500);
+}
+
+.hds-avatar {
+  position: relative;
+  display: inline-block;
+  flex: none;
+  isolation: isolate;
+}
+
+.hds-avatar-glow {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: var(--radius-full);
+  background: var(--accent-fill);
+  opacity: 0.7;
+  filter: blur(24px);
+}
+
+.hds-avatar-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 4px solid var(--accent-fill);
+  border-radius: var(--radius-full);
+  object-fit: cover;
+}
+
+/* ---------- Motion preferences ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .hds-card--interactive:hover {
+    transform: none;
+  }
+
+  .hds-segmented-thumb,
+  .hds-toast {
+    transition: none;
+    animation: none;
+  }
+
+  .hds-loading .hds-icon,
+  .hds-spin {
+    animation-duration: 2.4s;
+  }
+}

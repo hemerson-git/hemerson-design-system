@@ -1,0 +1,3 @@
+/* Raleway for text, JetBrains Mono for numerals. Projects that self-host the
+   fonts can import tokens.css and components.css instead of styles.css. */
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Raleway:wght@400;500;600;700&display=swap");

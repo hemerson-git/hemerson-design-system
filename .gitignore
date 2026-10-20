@@ -1,0 +1,11 @@
+node_modules
+dist
+storybook-static
+*.log
+.DS_Store
+.vscode/*
+!.vscode/extensions.json
+.idea
+
+# Generated from tokens/tokens.json by `npm run tokens`
+src/styles/tokens.css
