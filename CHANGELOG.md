@@ -1,5 +1,11 @@
 # @hemerson/design-system
 
+## 0.3.1
+
+### Patch Changes
+
+- [#5](https://github.com/hemerson-git/hemerson-design-system/pull/5) [`dab3d8c`](https://github.com/hemerson-git/hemerson-design-system/commit/dab3d8cf8ba9c8ba5f60268c79d7fa65e2228391) Thanks [@hemerson-git](https://github.com/hemerson-git)! - Fix the types of `applyStoredAppearance`, `setTheme`, `setTransparency` and the other appearance helpers when imported from `@hemerson/design-system`. The root entry re-exported them from a path that TypeScript resolved to the built `appearance.js` file, which has no types, so apps got "has no exported member". Imports from `@hemerson/design-system/appearance` were not affected.
+
 ## 0.3.0
 
 ### Minor Changes
