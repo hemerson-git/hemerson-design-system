@@ -3,6 +3,7 @@ import { Pencil } from "lucide-react";
 import { Table, type TableColumn } from "./Table";
 import { Badge } from "../Badge/Badge";
 import { Button } from "../Button/Button";
+import { GlassScene } from "../../docs/GlassScene";
 
 type Boleto = {
   id: number;
@@ -50,4 +51,16 @@ export const Boletos: Story = {};
 
 export const Empty: Story = {
   args: { rows: [], empty: "Nenhum boleto neste mês." },
+};
+
+/** On glass, for a table that sits on the app's background rather than over other content. The header frosts the rows that scroll under it. */
+export const OnGlass: Story = {
+  args: { glass: true, maxHeight: 220 },
+  render: (args) => (
+    <GlassScene minHeight={300}>
+      <div style={{ width: "100%" }}>
+        <Table {...args} />
+      </div>
+    </GlassScene>
+  ),
 };

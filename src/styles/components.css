@@ -101,7 +101,7 @@
 
   .hds-glass--thick {
     background: linear-gradient(135deg, var(--glass-sheen), transparent 42%), var(--glass-thick-tint);
-    -webkit-backdrop-filter: blur(20px) saturate(150%);
+    -webkit-backdrop-filter: blur(10px) saturate(170%);
     backdrop-filter: var(--glass-thick-blur);
   }
 
@@ -924,8 +924,12 @@ html[data-transparency="reduced"] .hds-glass::before {
 
 .hds-table-wrap {
   overflow-x: auto;
-  border: 1px solid var(--line);
   border-radius: var(--radius-lg);
+}
+
+/* Solid unless the table is on glass, which brings its own background and edge */
+.hds-table-wrap:not(.hds-glass) {
+  border: 1px solid var(--line);
   background: var(--surface-raised);
 }
 
@@ -984,6 +988,27 @@ html[data-transparency="reduced"] .hds-glass::before {
 
 .hds-table .hds-cell--center {
   text-align: center;
+}
+
+/* On glass the header is frosted too, so rows scrolling under it stay out of the way */
+.hds-table-wrap--glass .hds-table th {
+  background: color-mix(in srgb, var(--surface-sunken) 60%, transparent);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+
+html[data-transparency="reduced"] .hds-table-wrap--glass .hds-table th {
+  background: var(--surface-sunken);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .hds-table-wrap--glass .hds-table th {
+    background: var(--surface-sunken);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
 }
 
 .hds-table-empty {
