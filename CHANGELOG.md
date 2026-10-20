@@ -1,5 +1,11 @@
 # @hemerson/design-system
 
+## 0.7.0
+
+### Minor Changes
+
+- [#13](https://github.com/hemerson-git/hemerson-design-system/pull/13) [`324c876`](https://github.com/hemerson-git/hemerson-design-system/commit/324c876b49c01d4a9813543f86f1491c078450f6) Thanks [@hemerson-git](https://github.com/hemerson-git)! - New `Typeahead`: a text field that suggests values as you type, such as names already used, in a glass list like `Menu`. Matches ignore case and accents, those that start with the text come first, repeats show once and the matching part is bold. The arrow keys move through the list (wrapping), Enter picks, Escape closes only the list (a dialog around it stays open) and a click picks without losing focus. Any text is still accepted, and it follows the WAI-ARIA combobox pattern.
+
 ## 0.6.0
 
 ### Minor Changes
