@@ -1,6 +1,6 @@
 {
   "name": "@hemerson/design-system",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Liquid-glass design system: tokens, styles and React components for Hemerson's projects.",
   "license": "MIT",
   "author": "Hemerson Oliveira",
