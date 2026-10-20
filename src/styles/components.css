@@ -543,6 +543,24 @@ html[data-transparency="reduced"] .hds-glass::before {
   color: var(--danger);
 }
 
+.hds-menu-header {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--space-2) var(--space-3);
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 20px;
+  cursor: default;
+}
+
+/* A second line, such as an email */
+.hds-menu-header small {
+  color: var(--ink-muted);
+  font-size: 13px;
+  line-height: 18px;
+}
+
 .hds-menu-separator {
   height: 1px;
   margin: var(--space-1) var(--space-2);

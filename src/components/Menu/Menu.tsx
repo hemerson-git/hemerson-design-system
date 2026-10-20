@@ -19,11 +19,16 @@ export interface MenuProps {
   align?: "start" | "end";
   /** Default `glass`. */
   triggerVariant?: ButtonVariant;
+  /**
+   * Context shown at the top of the list, such as the signed-in account. Not an action:
+   * screen readers hear it as the list's description.
+   */
+  header?: ReactNode;
   className?: string;
 }
 
 /** A button that opens a glass list of actions. */
-export function Menu({ label, icon, iconOnly = false, items, align = "end", triggerVariant = "glass", className }: MenuProps) {
+export function Menu({ label, icon, iconOnly = false, items, align = "end", triggerVariant = "glass", header, className }: MenuProps) {
   const [isOpen, setOpen] = useState(false);
   const trigger = useRef<HTMLButtonElement>(null);
   const panel = useRef<HTMLElement>(null);
@@ -108,9 +113,18 @@ export function Menu({ label, icon, iconOnly = false, items, align = "end", trig
               id={id}
               role="menu"
               aria-label={label}
+              aria-describedby={header ? `${id}-header` : undefined}
               className="hds-menu-panel"
               onKeyDown={onKeyDown}
             >
+              {header ? (
+                <>
+                  <div id={`${id}-header`} role="none" className="hds-menu-header">
+                    {header}
+                  </div>
+                  <div role="separator" className="hds-menu-separator" />
+                </>
+              ) : null}
               {items.map((item, index) =>
                 item.separator ? (
                   <div key={`separator-${index}`} role="separator" className="hds-menu-separator" />

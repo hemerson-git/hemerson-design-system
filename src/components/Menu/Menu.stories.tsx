@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Copy, Ellipsis, Pencil, Trash2 } from "lucide-react";
+import { Copy, Ellipsis, LogOut, Moon, Pencil, Trash2 } from "lucide-react";
 import { fn } from "storybook/test";
 import { Menu } from "./Menu";
 import { Table } from "../Table/Table";
@@ -66,6 +66,32 @@ export const InsideATable: Story = {
           ]}
         />
       </div>
+    </GlassScene>
+  ),
+};
+
+/** An account menu: the header names the signed-in user above the actions. */
+export const WithHeader: Story = {
+  args: {
+    label: "Conta de Fulano de Tal",
+    iconOnly: true,
+    icon: <Ellipsis />,
+    triggerVariant: "ghost",
+    header: (
+      <>
+        <strong>Fulano de Tal</strong>
+        <small>fulano@example.com</small>
+      </>
+    ),
+    items: [
+      { label: "Tema escuro", icon: <Moon /> },
+      { separator: true },
+      { label: "Sair", icon: <LogOut /> },
+    ],
+  },
+  render: (args) => (
+    <GlassScene minHeight={300}>
+      <Menu {...args} />
     </GlassScene>
   ),
 };
