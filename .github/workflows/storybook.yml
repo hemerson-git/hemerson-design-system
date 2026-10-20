@@ -1,9 +1,9 @@
 name: Storybook
 
-# Publishes Storybook to GitHub Pages on every push to main
+# Publishes Storybook to GitHub Pages on every push to master
 on:
   push:
-    branches: [main]
+    branches: [master]
   workflow_dispatch:
 
 permissions:

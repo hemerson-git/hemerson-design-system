@@ -57,7 +57,7 @@ Tokens live in [`tokens/tokens.json`](tokens/tokens.json); `npm run tokens` turn
 
 ## Releases
 
-Versions follow [semver](https://semver.org) and are managed with [Changesets](https://github.com/changesets/changesets). Every change to the package comes with a changeset (`npx changeset`). Merging to `main` opens a "version packages" pull request that bumps the version and updates the [changelog](CHANGELOG.md); merging that pull request publishes to npm from GitHub Actions. Storybook redeploys on every push to `main`.
+Versions follow [semver](https://semver.org) and are managed with [Changesets](https://github.com/changesets/changesets). Every change to the package comes with a changeset (`npx changeset`). Merging to `master` opens a "version packages" pull request that bumps the version and updates the [changelog](CHANGELOG.md); merging that pull request publishes to npm from GitHub Actions. Storybook redeploys on every push to `master`.
 
 ## Contributing
 

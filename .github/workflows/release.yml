@@ -1,10 +1,10 @@
 name: Release
 
-# On every push to main, Changesets either opens (or updates) a "version packages"
+# On every push to master, Changesets either opens (or updates) a "version packages"
 # pull request, or, once that pull request is merged, publishes the new version.
 on:
   push:
-    branches: [main]
+    branches: [master]
 
 concurrency: release-${{ github.ref }}
 

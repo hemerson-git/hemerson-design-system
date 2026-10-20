@@ -13,7 +13,7 @@ Storybook opens on http://localhost:6006. Use its toolbar to check your change i
 
 ## Make a change
 
-1. Fork the repository and create a branch from `main`.
+1. Fork the repository and create a branch from `master`.
 2. Put each component in `src/components/<Name>/`, with its stories (`<Name>.stories.tsx`) and tests (`<Name>.test.tsx`).
 3. Use the tokens (`var(--surface)`, `var(--accent)` and so on) instead of literal colors and sizes. Change a token in `tokens/tokens.json`, never in the generated `tokens.css`.
 4. Keep glass for navigation and controls; content stays solid. The Introduction page in Storybook lists the rules.
