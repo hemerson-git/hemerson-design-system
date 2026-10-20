@@ -45,7 +45,8 @@ export { ThemeToggle, TransparencyToggle } from "./components/AppearanceToggles/
 export type { ThemeToggleProps, TransparencyToggleProps } from "./components/AppearanceToggles/AppearanceToggles";
 export { useAppearance } from "./appearance/useAppearance";
 export type { UseAppearance } from "./appearance/useAppearance";
-export * from "./appearance";
+// "./appearance/index", not "./appearance": in dist that name is also the built appearance.js entry, which has no types
+export * from "./appearance/index";
 
 // Layout and feedback
 export { Container } from "./components/Container/Container";
