@@ -21,6 +21,8 @@ export interface DialogProps {
   closeLabel?: string;
   /** `panel` focuses the panel itself instead of its first control. */
   initialFocus?: "first" | "panel";
+  /** md (default, 560px) for forms and confirmations · lg (880px) for wide content such as a print preview. */
+  size?: "md" | "lg";
   className?: string;
 }
 
@@ -34,6 +36,7 @@ export function Dialog({
   footer,
   closeLabel = "Fechar",
   initialFocus = "first",
+  size = "md",
   className,
 }: DialogProps) {
   const panel = useRef<HTMLElement>(null);
@@ -103,7 +106,7 @@ export function Dialog({
         aria-labelledby={titleId}
         aria-describedby={description ? descriptionId : undefined}
         tabIndex={-1}
-        className={cx("hds-dialog", className)}
+        className={cx("hds-dialog", size !== "md" && `hds-dialog--${size}`, className)}
       >
         <div className="hds-dialog-header">
           <div>

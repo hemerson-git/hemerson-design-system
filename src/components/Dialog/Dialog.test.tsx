@@ -106,4 +106,12 @@ describe("Dialog", () => {
     act(() => pressKey("Escape"));
     expect(document.body.style.overflow).toBe("");
   });
+
+  it("is 560px wide by default and wider with size lg", () => {
+    const { rerender } = render(<Dialog open onClose={() => {}} title="Editar boleto" />);
+    expect(screen.getByRole("dialog").classList.contains("hds-dialog--lg")).toBe(false);
+
+    rerender(<Dialog open onClose={() => {}} title="Imprimir boletos" size="lg" />);
+    expect(screen.getByRole("dialog").classList.contains("hds-dialog--lg")).toBe(true);
+  });
 });

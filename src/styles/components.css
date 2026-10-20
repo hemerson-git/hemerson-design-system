@@ -20,6 +20,11 @@
   outline-offset: 2px;
 }
 
+/* The hidden attribute always wins over the display set by these styles */
+[class*="hds-"][hidden] {
+  display: none !important;
+}
+
 /* Dialogs and toasts render straight into <body>, outside .hds-root */
 .hds-scrim,
 .hds-toast-region {
@@ -491,17 +496,20 @@ html[data-transparency="reduced"] .hds-glass::before {
   display: inline-block;
 }
 
+/* Rendered into <body> and placed from the trigger by the component, so scroll
+   containers never clip it; above dialogs, so a menu inside one still shows */
 .hds-menu-panel {
-  position: absolute;
-  top: calc(100% + var(--space-2));
-  z-index: 30;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 70;
   min-width: 176px;
+  max-height: calc(100vh - var(--space-4));
+  overflow: auto;
   padding: var(--space-1);
   border-radius: var(--radius-lg);
+  font-family: var(--font-sans);
 }
-
-.hds-menu-panel--start { left: 0; }
-.hds-menu-panel--end { right: 0; }
 
 .hds-menu-item {
   display: flex;
@@ -563,6 +571,10 @@ html[data-transparency="reduced"] .hds-glass::before {
   overflow: auto;
   padding: var(--space-6);
   border-radius: var(--radius-2xl);
+}
+
+.hds-dialog--lg {
+  max-width: 880px;
 }
 
 .hds-dialog-header {
