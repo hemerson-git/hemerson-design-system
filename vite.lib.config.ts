@@ -8,6 +8,7 @@ export default defineConfig({
       entry: {
         index: "src/index.ts",
         glass: "src/glass/index.ts",
+        appearance: "src/appearance/index.ts",
       },
       formats: ["es"],
     },

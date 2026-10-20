@@ -33,7 +33,36 @@ export function Toolbar() {
 }
 ```
 
-Set `data-theme="dark"` or `data-theme="light"` on `<html>`. Set `data-transparency="reduced"` to turn glass solid, and offer that as a setting in your app.
+Apps open in the dark theme. Restore the visitor's last choice before the first render, and let them change it with the toggles:
+
+```ts
+// main.tsx, before the first render, so the page never flashes the wrong theme
+import { applyStoredAppearance } from "@hemerson/design-system/appearance";
+
+applyStoredAppearance();
+```
+
+```tsx
+import { ThemeToggle, TransparencyToggle } from "@hemerson/design-system";
+
+<ThemeToggle />          // dark ↔ light, remembered
+<TransparencyToggle />   // solid glass, remembered
+```
+
+Raise toasts from anywhere once the app sits inside `ToastProvider`:
+
+```tsx
+import { ToastProvider, useToast } from "@hemerson/design-system";
+
+<ToastProvider>
+  <App />
+</ToastProvider>;
+
+// anywhere inside
+const toast = useToast();
+toast.success("Boleto salvo", "Fulano de Tal · R$ 1.234,56");
+toast.error("Não foi possível salvar");
+```
 
 Turn on the edge lens once at startup. It only acts in Chromium; elsewhere glass stays frosted:
 

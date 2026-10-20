@@ -26,9 +26,37 @@ export function Toolbar() {
 }
 ```
 
-- **Themes:** set `data-theme="dark"` (the default) or `data-theme="light"` on `<html>`.
-- **Reduced transparency:** set `data-transparency="reduced"` on `<html>` to turn every glass surface solid. Offer it as a setting in your app.
+- **Themes and transparency:** apps open dark. Call `applyStoredAppearance()` before the first render to restore what the visitor chose last time, and put `ThemeToggle` and `TransparencyToggle` in your toolbar. Without React, `setTheme` and `setTransparency` do the same job. Under the hood these set `data-theme` and `data-transparency` on `<html>`.
+- **Toasts:** wrap the app in `ToastProvider` and call `useToast()` to stack up to three at a time.
 - **Edge lens:** call `enableGlassRefraction()` from `@hemerson/design-system/glass` once at startup to bend the content at the glass edges in Chromium. Other browsers keep frosted glass.
+
+```ts
+// main.tsx, before the first render, so the page never flashes the wrong theme
+import { applyStoredAppearance } from "@hemerson/design-system/appearance";
+
+applyStoredAppearance();
+```
+
+```tsx
+import { ThemeToggle, TransparencyToggle } from "@hemerson/design-system";
+
+<ThemeToggle />          // dark ↔ light, remembered
+<TransparencyToggle />   // solid glass, remembered
+```
+
+```tsx
+import { ToastProvider, useToast } from "@hemerson/design-system";
+
+<ToastProvider>
+  <App />
+</ToastProvider>;
+
+// anywhere inside
+const toast = useToast();
+toast.success("Boleto salvo", "Fulano de Tal · R$ 1.234,56");
+toast.error("Não foi possível salvar");
+```
+
 - **Fonts:** `styles.css` loads Raleway and JetBrains Mono from Google Fonts. To self-host them, import `tokens.css` and your own font files instead.
 
 ## What's inside
@@ -36,6 +64,7 @@ export function Toolbar() {
 | Export | Contents |
 | --- | --- |
 | `@hemerson/design-system` | React components |
+| `@hemerson/design-system/appearance` | `applyStoredAppearance()`, `setTheme()`, `setTransparency()`, without React |
 | `@hemerson/design-system/glass` | `enableGlassRefraction()`, the Chromium edge lens, without React |
 | `@hemerson/design-system/styles.css` | Fonts, tokens and component styles |
 | `@hemerson/design-system/tokens.css` | CSS custom properties for both themes |

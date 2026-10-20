@@ -41,6 +41,10 @@
       "types": "./dist/glass/index.d.ts",
       "import": "./dist/glass.js"
     },
+    "./appearance": {
+      "types": "./dist/appearance/index.d.ts",
+      "import": "./dist/appearance.js"
+    },
     "./styles.css": "./dist/styles.css",
     "./tokens.css": "./dist/tokens.css",
     "./tokens.json": "./dist/tokens.json"

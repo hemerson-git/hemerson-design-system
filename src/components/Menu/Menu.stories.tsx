@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Copy, Ellipsis, Pencil, Trash2 } from "lucide-react";
 import { fn } from "storybook/test";
 import { Menu } from "./Menu";
+import { Table } from "../Table/Table";
 import { GlassScene } from "../../docs/GlassScene";
 
 const meta = {
@@ -35,6 +36,36 @@ export const IconTrigger: Story = {
   render: (args) => (
     <GlassScene minHeight={300}>
       <Menu {...args} />
+    </GlassScene>
+  ),
+};
+
+const boletos = [
+  { id: 1, recipient: "Companhia de Energia", value: "R$ 1.234,56" },
+  { id: 2, recipient: "Internet Fibra", value: "R$ 99,90" },
+  { id: 3, recipient: "Condomínio", value: "R$ 640,00" },
+];
+
+/** The list renders above the page, so a scrolling table can't clip it, and it opens upward near the bottom of the window. */
+export const InsideATable: Story = {
+  render: (args) => (
+    <GlassScene minHeight={300}>
+      <div style={{ width: "100%", maxHeight: 180, overflow: "auto" }}>
+        <Table
+          caption="Boletos de outubro"
+          rows={boletos}
+          columns={[
+            { key: "recipient", header: "Beneficiário" },
+            { key: "value", header: "Valor", numeric: true },
+            {
+              key: "actions",
+              header: "Ações",
+              align: "center",
+              render: (row) => <Menu {...args} align="end" iconOnly icon={<Ellipsis />} triggerVariant="ghost" label={`Ações de ${row.recipient}`} />,
+            },
+          ]}
+        />
+      </div>
     </GlassScene>
   ),
 };

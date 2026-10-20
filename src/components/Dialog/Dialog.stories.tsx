@@ -72,3 +72,36 @@ export const WithForm: Story = {
     );
   },
 };
+
+/** `size="lg"` widens the panel to 880px for content such as a print preview or a table. */
+export const Large: Story = {
+  render: function Render() {
+    const [open, setOpen] = useState(true);
+    return (
+      <GlassScene minHeight={420}>
+        <Button onClick={() => setOpen(true)}>Imprimir boletos</Button>
+        <Dialog
+          open={open}
+          onClose={() => setOpen(false)}
+          size="lg"
+          title="Imprimir boletos"
+          description="3 boletos selecionados · total R$ 1.974,46"
+          footer={
+            <>
+              <Button variant="ghost" onClick={() => setOpen(false)}>
+                Cancelar
+              </Button>
+              <Button onClick={() => setOpen(false)}>Imprimir</Button>
+            </>
+          }
+        >
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "var(--space-3)" }}>
+            <Input label="Beneficiário" defaultValue="Companhia de Energia" />
+            <Input label="Vencimento" defaultValue="10/10/2026" />
+            <Input label="Valor" numeric defaultValue="1234.56" />
+          </div>
+        </Dialog>
+      </GlassScene>
+    );
+  },
+};

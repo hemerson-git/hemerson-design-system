@@ -21,6 +21,8 @@ export { Dialog } from "./components/Dialog/Dialog";
 export type { DialogProps } from "./components/Dialog/Dialog";
 export { Toast } from "./components/Toast/Toast";
 export type { ToastProps, ToastTone } from "./components/Toast/Toast";
+export { ToastProvider, useToast } from "./components/Toast/ToastProvider";
+export type { ToastApi, ToastOptions, ToastProviderProps } from "./components/Toast/ToastProvider";
 
 // Forms
 export { Input } from "./components/Input/Input";
@@ -37,6 +39,13 @@ export { Badge } from "./components/Badge/Badge";
 export type { BadgeProps, BadgeTone } from "./components/Badge/Badge";
 export { Table } from "./components/Table/Table";
 export type { TableColumn, TableProps } from "./components/Table/Table";
+
+// Appearance: dark by default, light and reduced transparency remembered
+export { ThemeToggle, TransparencyToggle } from "./components/AppearanceToggles/AppearanceToggles";
+export type { ThemeToggleProps, TransparencyToggleProps } from "./components/AppearanceToggles/AppearanceToggles";
+export { useAppearance } from "./appearance/useAppearance";
+export type { UseAppearance } from "./appearance/useAppearance";
+export * from "./appearance";
 
 // Layout and feedback
 export { Container } from "./components/Container/Container";

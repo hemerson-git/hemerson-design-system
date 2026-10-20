@@ -1,4 +1,5 @@
-import { useEffect, useId, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
+import { useEffect, useId, useLayoutEffect, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
+import { createPortal } from "react-dom";
 import { cx } from "../../internal/cx";
 import { Button, type ButtonVariant } from "../Button/Button";
 import { GlassPanel } from "../GlassPanel/GlassPanel";
@@ -20,10 +21,35 @@ export interface MenuProps {
   className?: string;
 }
 
+/** Space between the trigger and the list, and the closest the list gets to the window edge. */
+const GAP = 8;
+
+/**
+ * Places the list under the trigger, or above it when there is no room below. The list lives
+ * in <body> with fixed positioning, so scroll containers (a table, a dialog) never clip it.
+ */
+function placePanel(trigger: HTMLElement, panel: HTMLElement, align: "start" | "end") {
+  const anchor = trigger.getBoundingClientRect();
+  const width = panel.offsetWidth;
+  const height = panel.offsetHeight;
+  const viewportWidth = document.documentElement.clientWidth || window.innerWidth;
+  const viewportHeight = document.documentElement.clientHeight || window.innerHeight;
+
+  const fitsBelow = anchor.bottom + GAP + height <= viewportHeight - GAP;
+  const fitsAbove = anchor.top - GAP - height >= GAP;
+  const top = fitsBelow || !fitsAbove ? anchor.bottom + GAP : anchor.top - GAP - height;
+
+  const preferredLeft = align === "end" ? anchor.right - width : anchor.left;
+  const left = Math.min(Math.max(GAP, preferredLeft), Math.max(GAP, viewportWidth - width - GAP));
+
+  panel.style.top = `${Math.round(top)}px`;
+  panel.style.left = `${Math.round(left)}px`;
+  panel.dataset.side = fitsBelow || !fitsAbove ? "bottom" : "top";
+}
+
 /** A button that opens a glass list of actions. */
 export function Menu({ label, icon, iconOnly = false, items, align = "end", triggerVariant = "glass", className }: MenuProps) {
   const [isOpen, setOpen] = useState(false);
-  const root = useRef<HTMLDivElement>(null);
   const trigger = useRef<HTMLButtonElement>(null);
   const panel = useRef<HTMLElement>(null);
   const id = useId();
@@ -35,12 +61,29 @@ export function Menu({ label, icon, iconOnly = false, items, align = "end", trig
     if (returnFocus) trigger.current?.focus();
   }
 
+  // Position before the first paint, then follow the trigger while the page scrolls or resizes
+  useLayoutEffect(() => {
+    if (!isOpen || !trigger.current || !panel.current) return;
+    const place = () => {
+      if (trigger.current && panel.current) placePanel(trigger.current, panel.current, align);
+    };
+    place();
+    window.addEventListener("scroll", place, true);
+    window.addEventListener("resize", place);
+    return () => {
+      window.removeEventListener("scroll", place, true);
+      window.removeEventListener("resize", place);
+    };
+  }, [isOpen, align]);
+
   useEffect(() => {
     if (!isOpen) return;
     menuItems()[0]?.focus();
 
     function onPointerDown(event: MouseEvent) {
-      if (root.current && !root.current.contains(event.target as Node)) setOpen(false);
+      const target = event.target as Node;
+      if (trigger.current?.contains(target) || panel.current?.contains(target)) return;
+      setOpen(false);
     }
     document.addEventListener("mousedown", onPointerDown);
     return () => document.removeEventListener("mousedown", onPointerDown);
@@ -54,7 +97,9 @@ export function Menu({ label, icon, iconOnly = false, items, align = "end", trig
       event.preventDefault();
       close(true);
     } else if (event.key === "Tab") {
-      close(false);
+      // The list sits at the end of <body>, so let focus return to the trigger's place
+      event.preventDefault();
+      close(true);
     } else if (event.key === "ArrowDown" || event.key === "ArrowUp") {
       event.preventDefault();
       const step = event.key === "ArrowDown" ? 1 : -1;
@@ -66,7 +111,7 @@ export function Menu({ label, icon, iconOnly = false, items, align = "end", trig
   }
 
   return (
-    <div ref={root} className={cx("hds-menu", className)}>
+    <div className={cx("hds-menu", className)}>
       <Button
         ref={trigger}
         variant={triggerVariant}
@@ -81,37 +126,40 @@ export function Menu({ label, icon, iconOnly = false, items, align = "end", trig
         {label}
       </Button>
 
-      {isOpen ? (
-        <GlassPanel
-          ref={panel}
-          id={id}
-          role="menu"
-          aria-label={label}
-          className={cx("hds-menu-panel", `hds-menu-panel--${align}`)}
-          onKeyDown={onKeyDown}
-        >
-          {items.map((item, index) =>
-            item.separator ? (
-              <div key={`separator-${index}`} role="separator" className="hds-menu-separator" />
-            ) : (
-              <button
-                key={item.label}
-                type="button"
-                role="menuitem"
-                tabIndex={-1}
-                className={cx("hds-menu-item", item.danger && "hds-menu-item--danger")}
-                onClick={() => {
-                  close(true);
-                  item.onSelect?.();
-                }}
-              >
-                {item.icon}
-                {item.label}
-              </button>
-            )
-          )}
-        </GlassPanel>
-      ) : null}
+      {isOpen
+        ? createPortal(
+            <GlassPanel
+              ref={panel}
+              id={id}
+              role="menu"
+              aria-label={label}
+              className="hds-menu-panel"
+              onKeyDown={onKeyDown}
+            >
+              {items.map((item, index) =>
+                item.separator ? (
+                  <div key={`separator-${index}`} role="separator" className="hds-menu-separator" />
+                ) : (
+                  <button
+                    key={item.label}
+                    type="button"
+                    role="menuitem"
+                    tabIndex={-1}
+                    className={cx("hds-menu-item", item.danger && "hds-menu-item--danger")}
+                    onClick={() => {
+                      close(true);
+                      item.onSelect?.();
+                    }}
+                  >
+                    {item.icon}
+                    {item.label}
+                  </button>
+                )
+              )}
+            </GlassPanel>,
+            document.body
+          )
+        : null}
     </div>
   );
 }
