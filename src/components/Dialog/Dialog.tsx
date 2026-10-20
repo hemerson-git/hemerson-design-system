@@ -62,6 +62,8 @@ export function Dialog({
 
     function onKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") {
+        // A menu or calendar open inside the dialog closes first, on its own Escape
+        if (event.defaultPrevented) return;
         event.preventDefault();
         onCloseRef.current();
         return;
