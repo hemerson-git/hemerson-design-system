@@ -15,7 +15,7 @@
 }
 
 :where(.hds-btn, .hds-input, .hds-select, .hds-checkbox-input, .hds-segmented-option,
-  .hds-menu-item, .hds-sidebar-item, .hds-navbar-link, .hds-scroll):focus-visible {
+  .hds-menu-item, .hds-sidebar-item, .hds-navbar-link, .hds-scroll, .hds-date-day):focus-visible {
   outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
 }
@@ -752,6 +752,197 @@ html[data-transparency="reduced"] .hds-glass::before {
   color: var(--ink-muted);
   transform: translateY(-50%);
   pointer-events: none;
+}
+
+/* Customizable select (Chromium 135+): the open list is glass, like Menu. The select stays
+   native for the keyboard, screen readers and forms; other browsers keep their own list. */
+@supports (appearance: base-select) {
+  .hds-select,
+  .hds-select::picker(select) {
+    appearance: base-select;
+  }
+
+  .hds-select {
+    display: flex;
+    align-items: center;
+  }
+
+  /* The wrapper already draws the chevron */
+  .hds-select::picker-icon {
+    display: none;
+  }
+
+  .hds-select::picker(select) {
+    margin-block: var(--space-2);
+    padding: var(--space-1);
+    border: 0;
+    border-radius: var(--radius-lg);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    background: linear-gradient(135deg, var(--glass-sheen), transparent 42%), var(--glass-regular-tint);
+    box-shadow: 0 0 0 0.5px var(--glass-edge), var(--shadow-glass);
+    text-shadow: var(--glass-text-shadow);
+    -webkit-backdrop-filter: blur(6px) saturate(180%);
+    backdrop-filter: var(--glass-blur);
+  }
+
+  .hds-select option {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: 36px;
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--space-1);
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  .hds-select option:hover,
+  .hds-select option:focus-visible {
+    outline: none;
+    background: var(--accent-soft);
+  }
+
+  .hds-select option:checked {
+    font-weight: 600;
+  }
+
+  .hds-select option::checkmark {
+    order: 1;
+    margin-left: auto;
+    color: var(--accent);
+  }
+
+  .hds-select option:disabled {
+    color: var(--ink-muted);
+    cursor: default;
+  }
+
+  html[data-transparency="reduced"] .hds-select::picker(select) {
+    border: 1px solid var(--line);
+    background: var(--glass-solid);
+    box-shadow: var(--shadow-raised);
+    text-shadow: none;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  @media (prefers-reduced-transparency: reduce) {
+    .hds-select::picker(select) {
+      border: 1px solid var(--line);
+      background: var(--glass-solid);
+      box-shadow: var(--shadow-raised);
+      text-shadow: none;
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+  }
+}
+
+/* ---------- DateInput ---------- */
+.hds-date-wrap {
+  position: relative;
+}
+
+.hds-date-input {
+  padding-right: var(--space-10);
+}
+
+.hds-date-wrap > .hds-date-button {
+  position: absolute;
+  top: 50%;
+  right: var(--space-1);
+  transform: translateY(-50%);
+}
+
+.hds-date-panel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 70;
+  width: 304px;
+  padding: var(--space-3);
+  border-radius: var(--radius-xl);
+  font-family: var(--font-sans);
+}
+
+.hds-date-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+}
+
+.hds-date-title {
+  margin: 0;
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 600;
+}
+
+.hds-date-grid {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.hds-date-grid th {
+  height: 28px;
+  color: var(--ink-muted);
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.hds-date-grid td {
+  padding: 1px;
+  text-align: center;
+}
+
+.hds-date-day {
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: transparent;
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  transition: background-color 150ms;
+}
+
+.hds-date-day:hover {
+  background: var(--accent-soft);
+}
+
+.hds-date-day--outside {
+  color: var(--ink-muted);
+}
+
+.hds-date-day[aria-current="date"] {
+  box-shadow: inset 0 0 0 1px var(--accent);
+}
+
+.hds-date-day--selected,
+.hds-date-day--selected:hover {
+  background: var(--accent-fill);
+  color: var(--on-accent);
+  font-weight: 600;
+  text-shadow: none;
+}
+
+.hds-date-day[aria-disabled="true"] {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.hds-date-day[aria-disabled="true"]:hover {
+  background: transparent;
 }
 
 .hds-checkbox {

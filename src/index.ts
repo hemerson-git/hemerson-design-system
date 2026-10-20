@@ -28,6 +28,8 @@ export type { ToastApi, ToastOptions, ToastProviderProps } from "./components/To
 export { Input } from "./components/Input/Input";
 export type { InputProps } from "./components/Input/Input";
 export { Select } from "./components/Select/Select";
+export { DateInput } from "./components/DateInput/DateInput";
+export type { DateInputProps } from "./components/DateInput/DateInput";
 export type { SelectOption, SelectProps } from "./components/Select/Select";
 export { Checkbox } from "./components/Checkbox/Checkbox";
 export type { CheckboxProps } from "./components/Checkbox/Checkbox";

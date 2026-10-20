@@ -10,6 +10,9 @@ const ICONS = {
   check: ["M20 6 9 17l-5-5"],
   x: ["M18 6 6 18", "m6 6 12 12"],
   "chevron-down": ["m6 9 6 6 6-6"],
+  "chevron-left": ["m15 18-6-6 6-6"],
+  "chevron-right": ["m9 18 6-6-6-6"],
+  calendar: ["M8 2v4", "M16 2v4", "M3 10h18", "M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z"],
   "circle-check": [RING, "m9 12 2 2 4-4"],
   "circle-x": [RING, "m15 9-6 6", "m9 9 6 6"],
   "triangle-alert": [
