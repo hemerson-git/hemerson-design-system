@@ -20,6 +20,13 @@
   outline-offset: 2px;
 }
 
+/* Dialogs and toasts render straight into <body>, outside .hds-root */
+.hds-scrim,
+.hds-toast-region {
+  font-family: var(--font-sans);
+  color: var(--ink);
+}
+
 .hds-visually-hidden {
   position: absolute;
   width: 1px;
@@ -39,76 +46,111 @@
 }
 
 /* ---------- Glass material ----------
-   Layer 1: solid, always readable. Layer 2: frosted glass where
-   backdrop-filter works. Layer 3: refraction, only when
-   enableGlassRefraction() marks <html data-glass-refraction> (Chromium). */
+   Modelled on Apple's Liquid Glass: a light tint so the content behind stays visible,
+   a light blur, a lit rim brightest at the top-left, a soft inner glow and, in Chromium,
+   a lens that bends the backdrop near the edges.
+
+   Layer 1: solid, always readable. Layer 2: frosted glass where backdrop-filter works.
+   Layer 3: the edge lens, added per element by enableGlassRefraction() (Chromium only).
+
+   Glass follows the brightness of what is behind it: over dark imagery in the light
+   theme, set data-theme="dark" on the glass element itself, and the reverse. */
 
 .hds-glass {
   position: relative;
+  isolation: isolate;
   color: var(--ink);
   background: var(--glass-solid);
   border: 1px solid var(--line);
-  border-top-color: var(--glass-rim);
-  box-shadow: var(--shadow-glass);
+  box-shadow: var(--shadow-raised);
 }
 
 @supports ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
   .hds-glass {
-    background: linear-gradient(135deg, var(--glass-sheen), transparent 45%), var(--glass-regular-tint);
-    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border: 0;
+    background: linear-gradient(135deg, var(--glass-sheen), transparent 42%), var(--glass-regular-tint);
+    box-shadow: 0 0 0 0.5px var(--glass-edge), var(--shadow-glass);
+    text-shadow: var(--glass-text-shadow);
+    -webkit-backdrop-filter: blur(6px) saturate(180%);
     backdrop-filter: var(--glass-blur);
   }
 
+  /* The lit rim: brightest at the top-left, softer at the bottom-right */
+  .hds-glass::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    padding: 1.5px;
+    border-radius: inherit;
+    background: linear-gradient(135deg, var(--glass-rim), transparent 38%, transparent 62%, var(--glass-rim-low));
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+    pointer-events: none;
+  }
+
   .hds-glass--clear {
-    background: linear-gradient(135deg, var(--glass-sheen), transparent 45%), var(--glass-clear-tint);
+    background: linear-gradient(135deg, var(--glass-sheen), transparent 42%), var(--glass-clear-tint);
   }
 
   .hds-glass--thick {
-    background: linear-gradient(135deg, var(--glass-sheen), transparent 45%), var(--glass-thick-tint);
+    background: linear-gradient(135deg, var(--glass-sheen), transparent 42%), var(--glass-thick-tint);
     -webkit-backdrop-filter: blur(20px) saturate(150%);
     backdrop-filter: var(--glass-thick-blur);
   }
 
   .hds-glass--accent {
     background: linear-gradient(135deg, var(--glass-accent-sheen), transparent 60%), var(--glass-accent-tint), var(--glass-regular-tint);
-    -webkit-backdrop-filter: blur(10px) saturate(180%);
+    box-shadow: 0 0 0 1px var(--accent), var(--shadow-glass), var(--shadow-glow);
+    -webkit-backdrop-filter: blur(6px) saturate(200%);
     backdrop-filter: var(--glass-accent-blur);
   }
 }
 
-.hds-glass--accent {
-  border-color: var(--accent);
-  box-shadow: var(--shadow-glass), var(--shadow-glow);
-}
-
+/* Edge lens: enableGlassRefraction() sets --hds-glass-lens on each glass element */
 html[data-glass-refraction] .hds-glass:not(.hds-glass--thick) {
-  backdrop-filter: blur(10px) url(#hds-glass-distortion) saturate(180%);
+  backdrop-filter: var(--hds-glass-lens, blur(0px)) blur(4px) saturate(180%);
 }
 
 html[data-glass-refraction] .hds-glass--accent {
-  backdrop-filter: blur(6px) url(#hds-glass-distortion) saturate(200%);
+  backdrop-filter: var(--hds-glass-lens, blur(0px)) blur(4px) saturate(200%);
 }
 
 /* Reduced transparency: the system setting, or the app's own setting */
 @media (prefers-reduced-transparency: reduce) {
   html .hds-glass,
   html[data-glass-refraction] .hds-glass:not(.hds-glass--thick) {
+    border: 1px solid var(--line);
     background: var(--glass-solid);
+    box-shadow: var(--shadow-raised);
+    text-shadow: none;
     -webkit-backdrop-filter: none;
     backdrop-filter: none;
+  }
+
+  html .hds-glass::before {
+    display: none;
   }
 }
 
 html[data-transparency="reduced"] .hds-glass,
 html[data-transparency="reduced"][data-glass-refraction] .hds-glass:not(.hds-glass--thick) {
+  border: 1px solid var(--line);
   background: var(--glass-solid);
+  box-shadow: var(--shadow-raised);
+  text-shadow: none;
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
 }
 
+html[data-transparency="reduced"] .hds-glass::before {
+  display: none;
+}
+
 @media (prefers-contrast: more) {
   .hds-glass {
-    border: 2px solid currentColor;
+    box-shadow: 0 0 0 2px currentColor, var(--shadow-glass);
   }
 }
 

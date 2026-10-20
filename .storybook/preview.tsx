@@ -2,6 +2,10 @@ import type { Decorator, Preview } from "@storybook/react-vite";
 import "../src/styles/fonts.css";
 import "../src/styles/tokens.css";
 import "../src/styles/components.css";
+import { enableGlassRefraction } from "../src/glass";
+
+// The edge lens in Chromium, as apps would turn it on at startup
+enableGlassRefraction();
 
 // Applies the toolbar's theme and transparency to <html>, as an app would
 const withAppearance: Decorator = (Story, context) => {
