@@ -30,6 +30,8 @@ export type { InputProps } from "./components/Input/Input";
 export { Select } from "./components/Select/Select";
 export { DateInput } from "./components/DateInput/DateInput";
 export type { DateInputProps } from "./components/DateInput/DateInput";
+export { Typeahead } from "./components/Typeahead/Typeahead";
+export type { TypeaheadProps } from "./components/Typeahead/Typeahead";
 export type { SelectOption, SelectProps } from "./components/Select/Select";
 export { Checkbox } from "./components/Checkbox/Checkbox";
 export type { CheckboxProps } from "./components/Checkbox/Checkbox";

@@ -859,6 +859,41 @@ html[data-transparency="reduced"] .hds-glass::before {
   }
 }
 
+/* ---------- Typeahead ---------- */
+.hds-typeahead-panel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 70;
+  max-height: min(320px, calc(100vh - var(--space-4)));
+  overflow: auto;
+  padding: var(--space-1);
+  border-radius: var(--radius-lg);
+  font-family: var(--font-sans);
+}
+
+.hds-typeahead-option {
+  display: flex;
+  align-items: center;
+  min-height: 36px;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--space-1);
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 20px;
+  cursor: pointer;
+}
+
+.hds-typeahead-option[aria-selected="true"] {
+  background: var(--accent-soft);
+}
+
+.hds-typeahead-match {
+  background: transparent;
+  color: inherit;
+  font-weight: 700;
+}
+
 /* ---------- DateInput ---------- */
 .hds-date-wrap {
   position: relative;
