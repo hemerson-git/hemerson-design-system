@@ -28,6 +28,7 @@ export function Toolbar() {
 
 - **Themes:** set `data-theme="dark"` (the default) or `data-theme="light"` on `<html>`.
 - **Reduced transparency:** set `data-transparency="reduced"` on `<html>` to turn every glass surface solid. Offer it as a setting in your app.
+- **Edge lens:** call `enableGlassRefraction()` from `@hemerson/design-system/glass` once at startup to bend the content at the glass edges in Chromium. Other browsers keep frosted glass.
 - **Fonts:** `styles.css` loads Raleway and JetBrains Mono from Google Fonts. To self-host them, import `tokens.css` and your own font files instead.
 
 ## What's inside
@@ -35,6 +36,7 @@ export function Toolbar() {
 | Export | Contents |
 | --- | --- |
 | `@hemerson/design-system` | React components |
+| `@hemerson/design-system/glass` | `enableGlassRefraction()`, the Chromium edge lens, without React |
 | `@hemerson/design-system/styles.css` | Fonts, tokens and component styles |
 | `@hemerson/design-system/tokens.css` | CSS custom properties for both themes |
 | `@hemerson/design-system/tokens.json` | The tokens as data |
