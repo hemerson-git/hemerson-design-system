@@ -672,6 +672,12 @@ html[data-transparency="reduced"] .hds-glass::before {
   margin: 0;
 }
 
+.hds-toast-action {
+  flex: none;
+  align-self: center;
+  color: var(--accent);
+}
+
 @keyframes hds-toast-in {
   from { opacity: 0; transform: translateY(var(--space-2)); }
 }

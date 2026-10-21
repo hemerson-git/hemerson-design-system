@@ -59,3 +59,14 @@ export const TryEachTone: Story = {
     );
   },
 };
+
+/** With an action, such as an undo. Without a duration it stays 10 seconds, and the timer pauses on hover and focus. */
+export const WithAction: Story = {
+  args: {
+    tone: "success",
+    title: "Boleto excluído",
+    description: "Companhia de Energia · R$ 187,42",
+    action: { label: "Desfazer", onAction: () => {} },
+  },
+  render: Success.render,
+};

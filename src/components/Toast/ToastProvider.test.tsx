@@ -147,3 +147,55 @@ describe("ToastProvider", () => {
     expect(() => render(<Capture />)).toThrow("useToast must be used inside a ToastProvider.");
   });
 });
+
+describe("ToastProvider actions", () => {
+  it("runs the action, then closes the toast", () => {
+    const onAction = vi.fn();
+    renderProvider();
+
+    act(() => {
+      toast.show({ title: "Boleto excluído", tone: "success", action: { label: "Desfazer", onAction } });
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Desfazer" }));
+
+    expect(onAction).toHaveBeenCalledTimes(1);
+    expect(shown()).toEqual([]);
+  });
+
+  it("stays longer when it offers an action, so there is time to use it", () => {
+    renderProvider();
+
+    act(() => {
+      toast.show({ title: "Com ação", action: { label: "Desfazer", onAction: () => {} } });
+      toast.show({ title: "Sem ação" });
+    });
+    act(() => vi.advanceTimersByTime(5000));
+    expect(shown()).toEqual(["Com ação"]);
+
+    act(() => vi.advanceTimersByTime(5000));
+    expect(shown()).toEqual([]);
+  });
+
+  it("keeps an explicit duration", () => {
+    renderProvider();
+
+    act(() => {
+      toast.show({ title: "Rápido", duration: 1000, action: { label: "Desfazer", onAction: () => {} } });
+    });
+    act(() => vi.advanceTimersByTime(1000));
+
+    expect(shown()).toEqual([]);
+  });
+
+  it("doesn't run the action when the toast closes by itself", () => {
+    const onAction = vi.fn();
+    renderProvider();
+
+    act(() => {
+      toast.show({ title: "Boleto excluído", action: { label: "Desfazer", onAction } });
+    });
+    act(() => vi.advanceTimersByTime(10000));
+
+    expect(onAction).not.toHaveBeenCalled();
+  });
+});

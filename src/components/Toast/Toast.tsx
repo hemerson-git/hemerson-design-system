@@ -1,8 +1,8 @@
 import type { ReactNode } from "react";
 import { createPortal } from "react-dom";
-import { ToastView, type ToastTone } from "./ToastView";
+import { ToastView, type ToastAction, type ToastTone } from "./ToastView";
 
-export type { ToastTone } from "./ToastView";
+export type { ToastAction, ToastTone } from "./ToastView";
 
 export interface ToastProps {
   open: boolean;
@@ -12,6 +12,8 @@ export interface ToastProps {
   description?: ReactNode;
   /** Milliseconds before it closes itself; 0 keeps it open. Default 5000. */
   duration?: number;
+  /** A text button next to the message, such as an undo. */
+  action?: ToastAction;
   /** Accessible name of the close button. Default "Fechar aviso". */
   closeLabel?: string;
   className?: string;
@@ -28,6 +30,7 @@ export function Toast({
   title,
   description,
   duration = 5000,
+  action,
   closeLabel = "Fechar aviso",
   className,
 }: ToastProps) {
@@ -40,6 +43,7 @@ export function Toast({
         title={title}
         description={description}
         duration={duration}
+        action={action}
         onClose={onClose}
         closeLabel={closeLabel}
         className={className}
