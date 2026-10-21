@@ -1,5 +1,11 @@
 # @hemerson/design-system
 
+## 0.9.0
+
+### Minor Changes
+
+- [#17](https://github.com/hemerson-git/hemerson-design-system/pull/17) [`ebc6089`](https://github.com/hemerson-git/hemerson-design-system/commit/ebc6089cb53a0fc9a0a0a1656cc25cbc38af65dd) Thanks [@hemerson-git](https://github.com/hemerson-git)! - New `BarChart` for comparing a few values: `vertical` for values over time, `horizontal` for rankings. Several series stack in each bar with a legend, coloured with the theme's tones, and `formatValue` sets how values read (e.g. as reais). The bars are hidden from screen readers, which get the same numbers as a table; the figure is named by its title, and an `empty` message replaces the bars when there is no data.
+
 ## 0.8.0
 
 ### Minor Changes
