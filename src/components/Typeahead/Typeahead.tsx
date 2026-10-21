@@ -28,6 +28,8 @@ export interface TypeaheadProps
   error?: ReactNode;
   /** Locale for matching without case. Default "pt-BR". */
   locale?: string;
+  /** Keeps the label for screen readers only, e.g. for a field inside a table cell. */
+  hideLabel?: boolean;
 }
 
 /** Lowercase and without accents, so "sao" finds "São Paulo". */
@@ -73,6 +75,7 @@ export function Typeahead({
   hint,
   error,
   locale = "pt-BR",
+  hideLabel = false,
   id,
   className,
   disabled,
@@ -152,7 +155,7 @@ export function Typeahead({
 
   return (
     <div className={cx("hds-field", className)}>
-      <label id={labelId} className="hds-label" htmlFor={ids.id}>
+      <label id={labelId} className={cx("hds-label", hideLabel && "hds-visually-hidden")} htmlFor={ids.id}>
         {label}
       </label>
       <input

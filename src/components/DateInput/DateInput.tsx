@@ -37,6 +37,8 @@ export interface DateInputProps
   calendarLabel?: string;
   previousMonthLabel?: string;
   nextMonthLabel?: string;
+  /** Keeps the label for screen readers only, e.g. for a field inside a table cell. */
+  hideLabel?: boolean;
 }
 
 const today = () => toIso(new Date());
@@ -59,6 +61,7 @@ export function DateInput({
   calendarLabel = "Abrir calendário",
   previousMonthLabel = "Mês anterior",
   nextMonthLabel = "Próximo mês",
+  hideLabel = false,
   name,
   id,
   disabled,
@@ -196,7 +199,7 @@ export function DateInput({
 
   return (
     <div className={cx("hds-field", className)}>
-      <label className="hds-label" htmlFor={ids.id}>
+      <label className={cx("hds-label", hideLabel && "hds-visually-hidden")} htmlFor={ids.id}>
         {label}
       </label>
       <div ref={field} className="hds-date-wrap">
