@@ -859,6 +859,160 @@ html[data-transparency="reduced"] .hds-glass::before {
   }
 }
 
+/* ---------- BarChart ---------- */
+.hds-chart {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  min-width: 0;
+  margin: 0;
+  color: var(--ink);
+  font-family: var(--font-sans);
+}
+
+.hds-chart-title {
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 600;
+}
+
+.hds-chart-empty {
+  margin: 0;
+  padding: var(--space-6) 0;
+  color: var(--ink-muted);
+  font-size: 14px;
+  text-align: center;
+}
+
+.hds-chart-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--ink-muted);
+  font-size: 13px;
+}
+
+.hds-chart-legend li {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.hds-chart-swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+}
+
+.hds-chart-tone--accent { background: var(--accent-fill); }
+.hds-chart-tone--secondary { background: var(--secondary-fill); }
+.hds-chart-tone--success { background: var(--success); }
+.hds-chart-tone--warning { background: var(--warning); }
+.hds-chart-tone--danger { background: var(--danger); }
+.hds-chart-tone--neutral { background: var(--ink-muted); }
+
+.hds-chart-value,
+.hds-chart-label {
+  font-size: 12px;
+  line-height: 16px;
+  white-space: nowrap;
+}
+
+.hds-chart-value {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.hds-chart-label {
+  color: var(--ink-muted);
+}
+
+.hds-chart-stack {
+  display: flex;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+  transition: height 300ms ease-out, width 300ms ease-out;
+}
+
+.hds-chart-bar {
+  flex-basis: 0;
+  min-width: 2px;
+  min-height: 2px;
+}
+
+/* Vertical: one column per label, the stack grows from the baseline */
+.hds-chart-columns {
+  display: flex;
+  align-items: stretch;
+  gap: var(--space-2);
+  padding-bottom: var(--space-1);
+  border-bottom: 1px solid var(--line);
+  overflow-x: auto;
+}
+
+.hds-chart-column {
+  display: grid;
+  flex: 1 0 44px;
+  grid-template-rows: 1fr auto;
+  justify-items: center;
+  gap: var(--space-1);
+  min-width: 44px;
+}
+
+/* The bar area: the value sits right on top of its bar, with room kept for it above the tallest */
+.hds-chart-plot {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  gap: var(--space-1);
+  width: 100%;
+  min-height: 0;
+  padding-top: 20px;
+}
+
+.hds-chart--vertical .hds-chart-stack {
+  flex-direction: column-reverse;
+  width: min(100%, 40px);
+}
+
+/* Horizontal: one row per label */
+.hds-chart-rows {
+  display: grid;
+  grid-template-columns: minmax(0, max-content) 1fr auto;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+}
+
+.hds-chart-row {
+  display: contents;
+}
+
+.hds-chart-row .hds-chart-label {
+  overflow: hidden;
+  max-width: 220px;
+  color: var(--ink);
+  font-size: 13px;
+  text-overflow: ellipsis;
+}
+
+.hds-chart-track {
+  min-width: 80px;
+}
+
+.hds-chart--horizontal .hds-chart-stack {
+  height: 14px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hds-chart-stack {
+    transition: none;
+  }
+}
+
 /* ---------- Typeahead ---------- */
 .hds-typeahead-panel {
   position: fixed;

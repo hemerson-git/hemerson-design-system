@@ -31,6 +31,8 @@ export { Select } from "./components/Select/Select";
 export { DateInput } from "./components/DateInput/DateInput";
 export type { DateInputProps } from "./components/DateInput/DateInput";
 export { Typeahead } from "./components/Typeahead/Typeahead";
+export { BarChart } from "./components/BarChart/BarChart";
+export type { BarChartProps, ChartDatum, ChartSeries, ChartTone } from "./components/BarChart/BarChart";
 export type { TypeaheadProps } from "./components/Typeahead/Typeahead";
 export type { SelectOption, SelectProps } from "./components/Select/Select";
 export { Checkbox } from "./components/Checkbox/Checkbox";
