@@ -10,6 +10,8 @@ export interface SelectOption {
 }
 
 export interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
+  /** Keeps the label for screen readers only, e.g. for a field inside a table cell. */
+  hideLabel?: boolean;
   label: ReactNode;
   options: SelectOption[];
   /** Shown as a disabled first option. */
@@ -20,14 +22,14 @@ export interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
 
 /** A labelled native dropdown, styled like Input, for choosing one option from a short list. */
 export const Select = forwardRef<HTMLSelectElement, SelectProps>(function Select(
-  { label, options, placeholder, hint, error, id, className, ...rest },
+  { label, options, placeholder, hint, error, hideLabel = false, id, className, ...rest },
   ref
 ) {
   const ids = useFieldIds(id);
 
   return (
     <div className={cx("hds-field", className)}>
-      <label className="hds-label" htmlFor={ids.id}>
+      <label className={cx("hds-label", hideLabel && "hds-visually-hidden")} htmlFor={ids.id}>
         {label}
       </label>
       <div className="hds-select-wrap">

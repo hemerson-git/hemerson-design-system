@@ -3,6 +3,8 @@ import { cx } from "../../internal/cx";
 import { describedBy, FieldMessages, useFieldIds } from "../../internal/field";
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+  /** Keeps the label for screen readers only, e.g. for a field inside a table cell. */
+  hideLabel?: boolean;
   /** Always visible, written as a noun ("Beneficiário"). */
   label: ReactNode;
   hint?: ReactNode;
@@ -14,14 +16,14 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 
 /** A labelled text field on a solid, recessed well. */
 export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
-  { label, hint, error, numeric = false, id, className, ...rest },
+  { label, hint, error, numeric = false, hideLabel = false, id, className, ...rest },
   ref
 ) {
   const ids = useFieldIds(id);
 
   return (
     <div className={cx("hds-field", className)}>
-      <label className="hds-label" htmlFor={ids.id}>
+      <label className={cx("hds-label", hideLabel && "hds-visually-hidden")} htmlFor={ids.id}>
         {label}
       </label>
       <input
