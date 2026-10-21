@@ -20,7 +20,7 @@ export type { FloatingButtonPosition, FloatingButtonProps } from "./components/F
 export { Dialog } from "./components/Dialog/Dialog";
 export type { DialogProps } from "./components/Dialog/Dialog";
 export { Toast } from "./components/Toast/Toast";
-export type { ToastProps, ToastTone } from "./components/Toast/Toast";
+export type { ToastAction, ToastProps, ToastTone } from "./components/Toast/Toast";
 export { ToastProvider, useToast } from "./components/Toast/ToastProvider";
 export type { ToastApi, ToastOptions, ToastProviderProps } from "./components/Toast/ToastProvider";
 

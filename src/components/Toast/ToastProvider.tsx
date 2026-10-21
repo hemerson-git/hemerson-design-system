@@ -1,13 +1,15 @@
 import { createContext, useCallback, useContext, useMemo, useRef, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
-import { ToastView, type ToastTone } from "./ToastView";
+import { ToastView, type ToastAction, type ToastTone } from "./ToastView";
 
 export interface ToastOptions {
   title: ReactNode;
   description?: ReactNode;
   tone?: ToastTone;
-  /** Milliseconds before it closes itself; 0 keeps it open until dismissed. Default 5000. */
+  /** Milliseconds before it closes itself; 0 keeps it open until dismissed. Default 5000, or 10000 with an action. */
   duration?: number;
+  /** A text button next to the message, such as an undo. */
+  action?: ToastAction;
 }
 
 export interface ToastApi {
@@ -24,6 +26,7 @@ interface QueuedToast extends Required<Pick<ToastOptions, "tone" | "duration">> 
   id: string;
   title: ReactNode;
   description?: ReactNode;
+  action?: ToastAction;
 }
 
 export interface ToastProviderProps {
@@ -46,9 +49,9 @@ export function ToastProvider({ children, max = 3, closeLabel = "Fechar aviso" }
   }, []);
 
   const show = useCallback(
-    ({ title, description, tone = "neutral", duration = 5000 }: ToastOptions) => {
+    ({ title, description, tone = "neutral", action, duration = action ? 10000 : 5000 }: ToastOptions) => {
       const id = `hds-toast-${++nextId.current}`;
-      setToasts((current) => [...current, { id, title, description, tone, duration }].slice(-max));
+      setToasts((current) => [...current, { id, title, description, tone, duration, action }].slice(-max));
       return id;
     },
     [max]
@@ -79,6 +82,7 @@ export function ToastProvider({ children, max = 3, closeLabel = "Fechar aviso" }
                   title={toast.title}
                   description={toast.description}
                   duration={toast.duration}
+                  action={toast.action}
                   closeLabel={closeLabel}
                   onClose={() => dismiss(toast.id)}
                 />

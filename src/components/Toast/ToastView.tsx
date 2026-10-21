@@ -13,19 +13,28 @@ const TONE_ICONS: Record<ToastTone, IconName> = {
   danger: "circle-x",
 };
 
+export interface ToastAction {
+  /** Short verb, e.g. "Desfazer". */
+  label: string;
+  /** Runs when the button is pressed; the toast then closes. */
+  onAction: () => void;
+}
+
 export interface ToastViewProps {
   tone: ToastTone;
   title: ReactNode;
   description?: ReactNode;
   /** Milliseconds before it closes itself; 0 keeps it open. */
   duration: number;
+  /** A text button next to the message, such as an undo. */
+  action?: ToastAction;
   onClose?: () => void;
   closeLabel: string;
   className?: string;
 }
 
 /** One toast: the glass card, its icon and close button, and a timer that pauses on hover or focus. */
-export function ToastView({ tone, title, description, duration, onClose, closeLabel, className }: ToastViewProps) {
+export function ToastView({ tone, title, description, duration, action, onClose, closeLabel, className }: ToastViewProps) {
   const [isPaused, setPaused] = useState(false);
   const onCloseRef = useRef(onClose);
   useEffect(() => {
@@ -52,6 +61,19 @@ export function ToastView({ tone, title, description, duration, onClose, closeLa
         <p className="hds-toast-title">{title}</p>
         {description ? <p className="hds-toast-description">{description}</p> : null}
       </div>
+      {action ? (
+        <Button
+          variant="ghost"
+          size="sm"
+          className="hds-toast-action"
+          onClick={() => {
+            action.onAction();
+            onClose?.();
+          }}
+        >
+          {action.label}
+        </Button>
+      ) : null}
       {onClose ? (
         <Button variant="ghost" size="sm" iconOnly icon={<Icon name="x" />} aria-label={closeLabel} onClick={onClose} />
       ) : null}
