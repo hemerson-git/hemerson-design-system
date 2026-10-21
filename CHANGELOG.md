@@ -1,5 +1,11 @@
 # @hemerson/design-system
 
+## 0.8.0
+
+### Minor Changes
+
+- [#15](https://github.com/hemerson-git/hemerson-design-system/pull/15) [`aa1b3ba`](https://github.com/hemerson-git/hemerson-design-system/commit/aa1b3ba1adb1ecea9dfa40f48a8ca41e47ecf476) Thanks [@hemerson-git](https://github.com/hemerson-git)! - `Input`, `Select`, `Typeahead` and `DateInput` take `hideLabel`: the label stays for screen readers but isn't shown, for a field whose context already says what it is, such as one inside a table cell.
+
 ## 0.7.0
 
 ### Minor Changes
