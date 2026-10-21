@@ -1,5 +1,11 @@
 # @hemerson/design-system
 
+## 0.10.0
+
+### Minor Changes
+
+- [#19](https://github.com/hemerson-git/hemerson-design-system/pull/19) [`dec1cf0`](https://github.com/hemerson-git/hemerson-design-system/commit/dec1cf0918c1943387f2155a935b8c61ce7147c5) Thanks [@hemerson-git](https://github.com/hemerson-git)! - Toasts take an `action`: a text button next to the message, such as `{ label: "Desfazer", onAction }`, that runs and then closes the toast. Closing on its own never runs it. Toasts raised with an action through `useToast().show` stay 10 seconds instead of 5 unless a duration is given, and the timer still pauses on hover and focus.
+
 ## 0.9.0
 
 ### Minor Changes
