@@ -35,13 +35,13 @@ function Controlled({ initial = "", onChange = () => {}, ...props }: { initial?:
 }
 
 const field = () => screen.getByLabelText("Vencimento") as HTMLInputElement;
-const openCalendar = () => fireEvent.click(screen.getByRole("button", { name: "Abrir calendário" }));
+const openCalendar = () => fireEvent.click(screen.getByRole("button", { name: "Open calendar" }));
 const calendar = () => screen.getByRole("dialog");
 const day = (name: RegExp) => within(calendar()).getByRole("button", { name });
 const press = (key: string, shiftKey = false) => fireEvent.keyDown(document.activeElement!, { key, shiftKey });
 
 describe("DateInput typing", () => {
-  it("shows the value as dd/mm/aaaa", () => {
+  it("shows the value as dd/mm/yyyy", () => {
     render(<Controlled initial="2026-03-05" />);
 
     expect(field().value).toBe("05/03/2026");
@@ -124,10 +124,10 @@ describe("DateInput calendar", () => {
 
     openCalendar();
 
-    expect(within(calendar()).getByRole("heading").textContent).toBe("Outubro de 2026");
-    expect(day(/^sábado, 10 de outubro de 2026$/).closest("td")?.getAttribute("aria-selected")).toBe("true");
-    expect(day(/^terça-feira, 20 de outubro de 2026$/).getAttribute("aria-current")).toBe("date");
-    expect(document.activeElement).toBe(day(/^sábado, 10 de outubro de 2026$/));
+    expect(within(calendar()).getByRole("heading").textContent).toBe("October 2026");
+    expect(day(/^Saturday,? 10 October 2026$/).closest("td")?.getAttribute("aria-selected")).toBe("true");
+    expect(day(/^Tuesday,? 20 October 2026$/).getAttribute("aria-current")).toBe("date");
+    expect(document.activeElement).toBe(day(/^Saturday,? 10 October 2026$/));
   });
 
   it("opens on today when empty", () => {
@@ -135,7 +135,7 @@ describe("DateInput calendar", () => {
 
     openCalendar();
 
-    expect(document.activeElement).toBe(day(/^terça-feira, 20 de outubro de 2026$/));
+    expect(document.activeElement).toBe(day(/^Tuesday,? 20 October 2026$/));
   });
 
   it("picks a day with a click, closes and returns focus to the button", () => {
@@ -143,12 +143,12 @@ describe("DateInput calendar", () => {
     render(<Controlled initial="2026-10-10" onChange={onChange} />);
 
     openCalendar();
-    fireEvent.click(day(/ 15 de outubro de 2026$/));
+    fireEvent.click(day(/ 15 October 2026$/));
 
     expect(onChange).toHaveBeenLastCalledWith("2026-10-15");
     expect(field().value).toBe("15/10/2026");
     expect(screen.queryByRole("dialog")).toBeNull();
-    expect(document.activeElement).toBe(screen.getByRole("button", { name: "Abrir calendário" }));
+    expect(document.activeElement).toBe(screen.getByRole("button", { name: "Open calendar" }));
   });
 
   it("moves by day, week and month with the keyboard", () => {
@@ -156,17 +156,17 @@ describe("DateInput calendar", () => {
     openCalendar();
 
     act(() => press("ArrowRight"));
-    expect(document.activeElement?.getAttribute("aria-label")).toMatch(/ 11 de outubro de 2026$/);
+    expect(document.activeElement?.getAttribute("aria-label")).toMatch(/ 11 October 2026$/);
 
     act(() => press("ArrowDown"));
-    expect(document.activeElement?.getAttribute("aria-label")).toMatch(/ 18 de outubro de 2026$/);
+    expect(document.activeElement?.getAttribute("aria-label")).toMatch(/ 18 October 2026$/);
 
     act(() => press("PageDown"));
-    expect(document.activeElement?.getAttribute("aria-label")).toMatch(/ 18 de novembro de 2026$/);
-    expect(within(calendar()).getByRole("heading").textContent).toBe("Novembro de 2026");
+    expect(document.activeElement?.getAttribute("aria-label")).toMatch(/ 18 November 2026$/);
+    expect(within(calendar()).getByRole("heading").textContent).toBe("November 2026");
 
     act(() => press("PageUp", true));
-    expect(document.activeElement?.getAttribute("aria-label")).toMatch(/ 18 de novembro de 2025$/);
+    expect(document.activeElement?.getAttribute("aria-label")).toMatch(/ 18 November 2025$/);
   });
 
   it("keeps the day within shorter months", () => {
@@ -175,7 +175,7 @@ describe("DateInput calendar", () => {
 
     act(() => press("PageDown"));
 
-    expect(document.activeElement?.getAttribute("aria-label")).toMatch(/ 28 de fevereiro de 2026$/);
+    expect(document.activeElement?.getAttribute("aria-label")).toMatch(/ 28 February 2026$/);
   });
 
   it("jumps to the start and end of the week, Sunday to Saturday", () => {
@@ -183,22 +183,22 @@ describe("DateInput calendar", () => {
     openCalendar();
 
     act(() => press("Home"));
-    expect(document.activeElement?.getAttribute("aria-label")).toMatch(/^domingo, 11 de outubro/);
+    expect(document.activeElement?.getAttribute("aria-label")).toMatch(/^Sunday,? 11 October/);
 
     act(() => press("End"));
-    expect(document.activeElement?.getAttribute("aria-label")).toMatch(/^sábado, 17 de outubro/);
+    expect(document.activeElement?.getAttribute("aria-label")).toMatch(/^Saturday,? 17 October/);
   });
 
   it("changes month with the arrow buttons", () => {
     render(<Controlled initial="2026-10-10" />);
     openCalendar();
 
-    fireEvent.click(screen.getByRole("button", { name: "Próximo mês" }));
-    expect(within(calendar()).getByRole("heading").textContent).toBe("Novembro de 2026");
+    fireEvent.click(screen.getByRole("button", { name: "Next month" }));
+    expect(within(calendar()).getByRole("heading").textContent).toBe("November 2026");
 
-    fireEvent.click(screen.getByRole("button", { name: "Mês anterior" }));
-    fireEvent.click(screen.getByRole("button", { name: "Mês anterior" }));
-    expect(within(calendar()).getByRole("heading").textContent).toBe("Setembro de 2026");
+    fireEvent.click(screen.getByRole("button", { name: "Previous month" }));
+    fireEvent.click(screen.getByRole("button", { name: "Previous month" }));
+    expect(within(calendar()).getByRole("heading").textContent).toBe("September 2026");
   });
 
   it("closes on Escape without changing the value", () => {
@@ -210,7 +210,7 @@ describe("DateInput calendar", () => {
 
     expect(screen.queryByRole("dialog")).toBeNull();
     expect(onChange).not.toHaveBeenCalled();
-    expect(document.activeElement).toBe(screen.getByRole("button", { name: "Abrir calendário" }));
+    expect(document.activeElement).toBe(screen.getByRole("button", { name: "Open calendar" }));
   });
 
   it("closes on a click outside", () => {
@@ -227,7 +227,7 @@ describe("DateInput calendar", () => {
     render(<Controlled initial="2026-10-10" onChange={onChange} min="2026-10-05" max="2026-10-25" />);
     openCalendar();
 
-    const early = day(/ 4 de outubro de 2026$/);
+    const early = day(/ 4 October 2026$/);
     expect(early.getAttribute("aria-disabled")).toBe("true");
     fireEvent.click(early);
 
@@ -239,7 +239,7 @@ describe("DateInput calendar", () => {
     render(<DateInput label="Vencimento" disabled />);
 
     expect(field().disabled).toBe(true);
-    expect((screen.getByRole("button", { name: "Abrir calendário" }) as HTMLButtonElement).disabled).toBe(true);
+    expect((screen.getByRole("button", { name: "Open calendar" }) as HTMLButtonElement).disabled).toBe(true);
   });
 
   it("has no accessibility violations with the calendar open", async () => {
@@ -269,7 +269,7 @@ describe("DateInput in a dialog", () => {
 
     fireEvent.keyDown(document.activeElement!, { key: "Escape" });
 
-    expect(screen.queryByRole("dialog", { name: /Outubro/ })).toBeNull();
+    expect(screen.queryByRole("dialog", { name: /October/ })).toBeNull();
     expect(onClose).not.toHaveBeenCalled();
     expect(screen.getByRole("dialog", { name: "Novo boleto" })).toBeTruthy();
   });
@@ -292,5 +292,44 @@ describe("DateInput in a dialog", () => {
     fireEvent.keyDown(document.activeElement!, { key: "Tab" });
 
     expect(screen.getByRole("dialog", { name: "Novo boleto" }).contains(document.activeElement)).toBe(true);
+  });
+});
+
+describe("DateInput language", () => {
+  it("speaks English by default: placeholder, buttons, month and day names", () => {
+    render(<DateInput label="Due date" defaultValue="2026-10-10" />);
+
+    expect(screen.getByLabelText("Due date").getAttribute("placeholder")).toBe("dd/mm/yyyy");
+    fireEvent.click(screen.getByRole("button", { name: "Open calendar" }));
+
+    expect(within(calendar()).getByRole("heading").textContent).toBe("October 2026");
+    expect(within(calendar()).getByRole("button", { name: "Previous month" })).toBeTruthy();
+    expect(within(calendar()).getByRole("button", { name: "Next month" })).toBeTruthy();
+    expect(day(/^Saturday,? 10 October 2026$/).closest("td")?.getAttribute("aria-selected")).toBe("true");
+    expect(within(calendar()).getAllByRole("columnheader").map((header) => header.getAttribute("abbr"))[0]).toBe("Sunday");
+  });
+
+  it("speaks Brazilian Portuguese when given its locale and labels", () => {
+    render(
+      <DateInput
+        label="Vencimento"
+        defaultValue="2026-10-10"
+        locale="pt-BR"
+        placeholder="dd/mm/aaaa"
+        calendarLabel="Abrir calendário"
+        previousMonthLabel="Mês anterior"
+        nextMonthLabel="Próximo mês"
+      />
+    );
+
+    expect(field().getAttribute("placeholder")).toBe("dd/mm/aaaa");
+    fireEvent.click(screen.getByRole("button", { name: "Abrir calendário" }));
+
+    expect(within(calendar()).getByRole("heading").textContent).toBe("Outubro de 2026");
+    expect(day(/^sábado, 10 de outubro de 2026$/).closest("td")?.getAttribute("aria-selected")).toBe("true");
+    fireEvent.click(within(calendar()).getByRole("button", { name: "Próximo mês" }));
+    expect(within(calendar()).getByRole("heading").textContent).toBe("Novembro de 2026");
+    fireEvent.click(within(calendar()).getByRole("button", { name: "Mês anterior" }));
+    expect(within(calendar()).getByRole("heading").textContent).toBe("Outubro de 2026");
   });
 });

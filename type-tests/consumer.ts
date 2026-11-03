@@ -7,5 +7,8 @@ import * as glass from "@hemerson/design-system/glass";
 export const rootHasAppearance: Pick<typeof root, keyof typeof appearance> = appearance;
 export const rootHasGlass: Pick<typeof root, keyof typeof glass> = glass;
 
+// Inlined in <head> by server-rendered apps
+export const script: string = appearance.appearanceScript;
+
 const theme: "dark" | "light" = root.applyStoredAppearance().theme;
 export const toggles = [root.ThemeToggle, root.TransparencyToggle, root.ToastProvider, root.useToast, theme];

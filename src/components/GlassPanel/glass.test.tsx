@@ -58,7 +58,7 @@ describe("Sidebar", () => {
       />
     );
 
-    expect(screen.getByRole("navigation", { name: "Navegação" })).toBeTruthy();
+    expect(screen.getByRole("navigation", { name: "Navigation" })).toBeTruthy();
     expect(screen.getByRole("link", { name: "Boletos" }).getAttribute("aria-current")).toBe("page");
     screen.getByRole("button", { name: "Ajustes" }).click();
     expect(onSettings).toHaveBeenCalledTimes(1);

@@ -74,6 +74,27 @@ export function applyStoredAppearance(): Appearance {
   return appearance;
 }
 
+/**
+ * What applyStoredAppearance does, as the source of an inline <script> for the <head> of
+ * server-rendered pages (such as Next.js), which can't run a module before the first paint.
+ */
+export const appearanceScript = `(() => {
+  const root = document.documentElement;
+  const read = (key) => {
+    try {
+      return localStorage.getItem(key);
+    } catch {
+      return null;
+    }
+  };
+  root.setAttribute("data-theme", read(${JSON.stringify(APPEARANCE_STORAGE_KEYS.theme)}) === "light" ? "light" : "dark");
+  if (read(${JSON.stringify(APPEARANCE_STORAGE_KEYS.transparency)}) === "reduced") {
+    root.setAttribute("data-transparency", "reduced");
+  } else {
+    root.removeAttribute("data-transparency");
+  }
+})();`;
+
 export function setTheme(theme: Theme) {
   write(APPEARANCE_STORAGE_KEYS.theme, theme);
   apply({ ...getAppearance(), theme });

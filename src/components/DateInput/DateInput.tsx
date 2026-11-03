@@ -29,11 +29,11 @@ export interface DateInputProps
   max?: string;
   hint?: ReactNode;
   error?: ReactNode;
-  /** Locale of the month and weekday names. Default "pt-BR". */
+  /** Locale of the month and weekday names. Default "en-GB", which reads day before month like the typed dd/mm/yyyy. */
   locale?: string;
   /** First day of the week, 0 for Sunday. Default 0. */
   weekStartsOn?: number;
-  /** Accessible names. Defaults in Brazilian Portuguese. */
+  /** Accessible names. Defaults in English. */
   calendarLabel?: string;
   previousMonthLabel?: string;
   nextMonthLabel?: string;
@@ -56,17 +56,17 @@ export function DateInput({
   max,
   hint,
   error,
-  locale = "pt-BR",
+  locale = "en-GB",
   weekStartsOn = 0,
-  calendarLabel = "Abrir calendário",
-  previousMonthLabel = "Mês anterior",
-  nextMonthLabel = "Próximo mês",
+  calendarLabel = "Open calendar",
+  previousMonthLabel = "Previous month",
+  nextMonthLabel = "Next month",
   hideLabel = false,
   name,
   id,
   disabled,
   required,
-  placeholder = "dd/mm/aaaa",
+  placeholder = "dd/mm/yyyy",
   className,
   ...rest
 }: DateInputProps) {

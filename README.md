@@ -57,17 +57,64 @@ toast.success("Boleto salvo", "Fulano de Tal · R$ 1.234,56");
 toast.error("Não foi possível salvar");
 ```
 
-- **Fonts:** `styles.css` loads Raleway and JetBrains Mono from Google Fonts. To self-host them, import `tokens.css` and your own font files instead.
+- **Fonts:** `styles.css` loads Raleway and JetBrains Mono from Google Fonts. To self-host them, import `tokens.css` and `components.css` instead, and load the two fonts yourself.
+- **Labels:** the built-in accessible names are in English ("Close", "Navigation", "Loading…", "Open calendar"…), and `DateInput` names months and days in `en-GB`. Each one is a prop, so an app in another language passes its own.
+
+## Next.js and React Server Components
+
+The root entry is marked `"use client"`, so Server Components can render the components directly. Functions imported from it arrive on the server as client references, so server code takes the theme helpers from `@hemerson/design-system/appearance`, which isn't client-only.
+
+To restore the visitor's theme before the first paint, inline `appearanceScript` in `<head>`. It sets `data-theme` before React hydrates, hence `suppressHydrationWarning`:
+
+```tsx
+// app/layout.tsx
+import { appearanceScript } from "@hemerson/design-system/appearance";
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: appearanceScript }} />
+      </head>
+      <body>{children}</body>
+    </html>
+  );
+}
+```
+
+## Tailwind CSS v4
+
+Put the component styles in Tailwind's `components` layer, so utilities can still override them, and map the color tokens to theme colors so classes such as `bg-surface` or `text-ink-muted` follow the theme:
+
+```css
+@import "tailwindcss";
+@import "@hemerson/design-system/tokens.css";
+@import "@hemerson/design-system/components.css" layer(components);
+
+@theme inline {
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-surface-sunken: var(--surface-sunken);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-line: var(--line);
+  --color-danger: var(--danger);
+}
+```
 
 ## What's inside
 
 | Export | Contents |
 | --- | --- |
-| `@hemerson/design-system` | React components |
-| `@hemerson/design-system/appearance` | `applyStoredAppearance()`, `setTheme()`, `setTransparency()`, without React |
+| `@hemerson/design-system` | React components, marked `"use client"` |
+| `@hemerson/design-system/appearance` | `applyStoredAppearance()`, `setTheme()`, `setTransparency()`, `appearanceScript`, without React |
 | `@hemerson/design-system/glass` | `enableGlassRefraction()`, the Chromium edge lens, without React |
 | `@hemerson/design-system/styles.css` | Fonts, tokens and component styles |
+| `@hemerson/design-system/fonts.css` | Only the Google Fonts import |
 | `@hemerson/design-system/tokens.css` | CSS custom properties for both themes |
+| `@hemerson/design-system/components.css` | Only the component styles, for self-hosted fonts or a cascade layer |
 | `@hemerson/design-system/tokens.json` | The tokens as data |
 
 ## Development

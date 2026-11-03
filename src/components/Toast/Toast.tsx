@@ -14,7 +14,7 @@ export interface ToastProps {
   duration?: number;
   /** A text button next to the message, such as an undo. */
   action?: ToastAction;
-  /** Accessible name of the close button. Default "Fechar aviso". */
+  /** Accessible name of the close button. Default "Close notification". */
   closeLabel?: string;
   className?: string;
 }
@@ -31,7 +31,7 @@ export function Toast({
   description,
   duration = 5000,
   action,
-  closeLabel = "Fechar aviso",
+  closeLabel = "Close notification",
   className,
 }: ToastProps) {
   if (!open) return null;

@@ -60,7 +60,7 @@ describe("Toast", () => {
     const onClose = vi.fn();
     render(<Toast open title="Boleto salvo" duration={0} onClose={onClose} />);
 
-    fireEvent.click(screen.getByRole("button", { name: "Fechar aviso" }));
+    fireEvent.click(screen.getByRole("button", { name: "Close notification" }));
 
     expect(onClose).toHaveBeenCalledTimes(1);
   });

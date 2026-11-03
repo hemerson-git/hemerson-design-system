@@ -29,6 +29,8 @@
     "vite.config.ts",
     "vite.lib.config.ts",
     "vitest.config.ts",
+    "vitest.package.config.ts",
+    "package-tests",
     "tokens"
   ]
 }

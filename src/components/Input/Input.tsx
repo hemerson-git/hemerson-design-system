@@ -5,7 +5,7 @@ import { describedBy, FieldMessages, useFieldIds } from "../../internal/field";
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   /** Keeps the label for screen readers only, e.g. for a field inside a table cell. */
   hideLabel?: boolean;
-  /** Always visible, written as a noun ("Beneficiário"). */
+  /** Always visible, written as a noun ("Recipient"). */
   label: ReactNode;
   hint?: ReactNode;
   /** Says how to fix the value; also marks the input invalid. */

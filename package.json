@@ -46,7 +46,9 @@
       "import": "./dist/appearance.js"
     },
     "./styles.css": "./dist/styles.css",
+    "./fonts.css": "./dist/fonts.css",
     "./tokens.css": "./dist/tokens.css",
+    "./components.css": "./dist/components.css",
     "./tokens.json": "./dist/tokens.json"
   },
   "scripts": {
@@ -59,11 +61,12 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "prepare": "husky",
-    "prepublishOnly": "npm run lint && npm run typecheck && npm test && npm run build && npm run test:types",
+    "prepublishOnly": "npm run lint && npm run typecheck && npm test && npm run build && npm run test:types && npm run test:package",
     "changeset": "changeset",
     "version-packages": "changeset version",
     "release": "changeset publish",
-    "test:types": "tsc -p tsconfig.type-tests.json"
+    "test:types": "tsc -p tsconfig.type-tests.json",
+    "test:package": "vitest run -c vitest.package.config.ts"
   },
   "peerDependencies": {
     "react": ">=18.2 <20",

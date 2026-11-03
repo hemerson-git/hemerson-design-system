@@ -33,14 +33,14 @@ export interface ToastProviderProps {
   children?: ReactNode;
   /** Most toasts shown at once; the oldest goes first. Default 3. */
   max?: number;
-  /** Accessible name of each close button. Default "Fechar aviso". */
+  /** Accessible name of each close button. Default "Close notification". */
   closeLabel?: string;
 }
 
 const ToastContext = createContext<ToastApi | null>(null);
 
 /** Shows the toasts raised with `useToast()` anywhere inside it, stacked at the bottom of the screen. */
-export function ToastProvider({ children, max = 3, closeLabel = "Fechar aviso" }: ToastProviderProps) {
+export function ToastProvider({ children, max = 3, closeLabel = "Close notification" }: ToastProviderProps) {
   const [toasts, setToasts] = useState<QueuedToast[]>([]);
   const nextId = useRef(0);
 

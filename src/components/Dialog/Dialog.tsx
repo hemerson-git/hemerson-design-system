@@ -17,7 +17,7 @@ export interface DialogProps {
   children?: ReactNode;
   /** The buttons, main action last. */
   footer?: ReactNode;
-  /** Accessible name of the close button. Default "Fechar". */
+  /** Accessible name of the close button. Default "Close". */
   closeLabel?: string;
   /** `panel` focuses the panel itself instead of its first control. */
   initialFocus?: "first" | "panel";
@@ -34,7 +34,7 @@ export function Dialog({
   description,
   children,
   footer,
-  closeLabel = "Fechar",
+  closeLabel = "Close",
   initialFocus = "first",
   size = "md",
   className,
