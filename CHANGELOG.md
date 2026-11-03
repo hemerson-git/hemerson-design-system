@@ -1,5 +1,11 @@
 # @hemerson/design-system
 
+## 0.11.1
+
+### Patch Changes
+
+- [#23](https://github.com/hemerson-git/hemerson-design-system/pull/23) [`8e81d82`](https://github.com/hemerson-git/hemerson-design-system/commit/8e81d82bd379762e35403a0046968653f15ea74b) Thanks [@hemerson-git](https://github.com/hemerson-git)! - Dialog: a control inside that has `autoFocus` keeps the focus when the dialog opens, instead of losing it to the close button. Without one, focus still starts on the first control.
+
 ## 0.11.0
 
 ### Minor Changes
