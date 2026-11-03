@@ -14,7 +14,7 @@ const TONE_ICONS: Record<ToastTone, IconName> = {
 };
 
 export interface ToastAction {
-  /** Short verb, e.g. "Desfazer". */
+  /** Short verb, e.g. "Undo". */
   label: string;
   /** Runs when the button is pressed; the toast then closes. */
   onAction: () => void;

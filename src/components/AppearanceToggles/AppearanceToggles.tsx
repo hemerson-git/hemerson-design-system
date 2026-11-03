@@ -5,16 +5,16 @@ import { Button, type ButtonProps } from "../Button/Button";
 type ToggleProps = Omit<ButtonProps, "onClick" | "children" | "icon" | "iconOnly" | "aria-label" | "aria-pressed">;
 
 export interface ThemeToggleProps extends ToggleProps {
-  /** Accessible name while dark. Default "Mudar para o tema claro". */
+  /** Accessible name while dark. Default "Switch to the light theme". */
   lightLabel?: string;
-  /** Accessible name while light. Default "Mudar para o tema escuro". */
+  /** Accessible name while light. Default "Switch to the dark theme". */
   darkLabel?: string;
 }
 
 /** Switches between the dark theme (the default) and the light one, and remembers the choice. */
 export function ThemeToggle({
-  lightLabel = "Mudar para o tema claro",
-  darkLabel = "Mudar para o tema escuro",
+  lightLabel = "Switch to the light theme",
+  darkLabel = "Switch to the dark theme",
   variant = "ghost",
   ...rest
 }: ThemeToggleProps) {
@@ -35,12 +35,12 @@ export function ThemeToggle({
 }
 
 export interface TransparencyToggleProps extends ToggleProps {
-  /** Accessible name. Default "Reduzir transparência"; the pressed state says whether it is on. */
+  /** Accessible name. Default "Reduce transparency"; the pressed state says whether it is on. */
   label?: string;
 }
 
 /** Turns every glass surface solid, or back to glass, and remembers the choice. */
-export function TransparencyToggle({ label = "Reduzir transparência", variant = "ghost", ...rest }: TransparencyToggleProps) {
+export function TransparencyToggle({ label = "Reduce transparency", variant = "ghost", ...rest }: TransparencyToggleProps) {
   const { transparency, toggleTransparency } = useAppearance();
 
   return (

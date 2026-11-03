@@ -17,13 +17,13 @@ export interface SidebarProps {
   footer?: ReactNode;
   /** A free-floating capsule instead of a rail attached to the edge. */
   floating?: boolean;
-  /** Name of the navigation landmark. Default "Navegação". */
+  /** Name of the navigation landmark. Default "Navigation". */
   label?: string;
   className?: string;
 }
 
 /** A slim glass rail of icon buttons for the app's main sections. */
-export function Sidebar({ items, footer, floating = false, label = "Navegação", className }: SidebarProps) {
+export function Sidebar({ items, footer, floating = false, label = "Navigation", className }: SidebarProps) {
   return (
     <GlassPanel as="nav" aria-label={label} className={cx("hds-sidebar", floating && "hds-sidebar--floating", className)}>
       <ul className="hds-sidebar-items">

@@ -125,7 +125,7 @@ describe("ToastProvider", () => {
     act(() => toast.dismiss(id));
     expect(shown()).toEqual(["Fixo"]);
 
-    fireEvent.click(screen.getByRole("button", { name: "Fechar aviso" }));
+    fireEvent.click(screen.getByRole("button", { name: "Close notification" }));
     expect(shown()).toEqual([]);
   });
 

@@ -14,6 +14,11 @@ export default defineConfig({
     },
     rollupOptions: {
       external: ["react", "react-dom", "react/jsx-runtime"],
+      output: {
+        // The components use hooks, so frameworks with React Server Components, such as Next.js,
+        // must load the root entry as client code. The React-free entries stay usable on the server.
+        banner: (chunk) => (chunk.isEntry && chunk.name === "index" ? '"use client";' : ""),
+      },
     },
     sourcemap: true,
     emptyOutDir: true,

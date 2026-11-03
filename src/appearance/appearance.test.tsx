@@ -1,6 +1,6 @@
 import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { APPEARANCE_STORAGE_KEYS, applyStoredAppearance, setTheme } from "./appearance";
+import { APPEARANCE_STORAGE_KEYS, appearanceScript, applyStoredAppearance, setTheme } from "./appearance";
 import { ThemeToggle, TransparencyToggle } from "../components/AppearanceToggles/AppearanceToggles";
 
 const root = document.documentElement;
@@ -56,27 +56,61 @@ describe("applyStoredAppearance", () => {
   });
 });
 
+describe("appearanceScript", () => {
+  type Saved = Partial<Record<keyof typeof APPEARANCE_STORAGE_KEYS, string>>;
+  const runScript = () => new Function(appearanceScript)();
+  const shown = () => [root.getAttribute("data-theme"), root.getAttribute("data-transparency")];
+
+  it.each<[string, Saved, (string | null)[]]>([
+    ["nothing is saved", {}, ["dark", null]],
+    ["light and reduced transparency are saved", { theme: "light", transparency: "reduced" }, ["light", "reduced"]],
+    ["dark and full transparency are saved", { theme: "dark", transparency: "full" }, ["dark", null]],
+    ["values it doesn't know are saved", { theme: "sepia", transparency: "half" }, ["dark", null]],
+  ])("puts the same on <html> as applyStoredAppearance when %s", (_case, saved, expected) => {
+    for (const key of Object.keys(saved) as (keyof Saved)[]) localStorage.setItem(APPEARANCE_STORAGE_KEYS[key], saved[key]!);
+
+    // A reduced transparency already on <html> must go unless it was saved
+    root.setAttribute("data-transparency", "reduced");
+    runScript();
+    expect(shown()).toEqual(expected);
+
+    root.removeAttribute("data-theme");
+    root.setAttribute("data-transparency", "reduced");
+    applyStoredAppearance();
+    expect(shown()).toEqual(expected);
+  });
+
+  it("falls back to dark when storage is blocked", () => {
+    vi.spyOn(Storage.prototype, "getItem").mockImplementation(() => {
+      throw new Error("blocked");
+    });
+
+    expect(runScript).not.toThrow();
+    expect(shown()).toEqual(["dark", null]);
+  });
+});
+
 describe("ThemeToggle", () => {
   it("starts dark and offers the light theme", () => {
     render(<ThemeToggle />);
 
     expect(root.getAttribute("data-theme")).toBe("dark");
-    expect(screen.getByRole("button", { name: "Mudar para o tema claro" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Switch to the light theme" })).toBeTruthy();
   });
 
   it("switches the theme, remembers it and updates its own label", () => {
     render(<ThemeToggle />);
 
-    fireEvent.click(screen.getByRole("button", { name: "Mudar para o tema claro" }));
+    fireEvent.click(screen.getByRole("button", { name: "Switch to the light theme" }));
 
     expect(root.getAttribute("data-theme")).toBe("light");
     expect(localStorage.getItem(APPEARANCE_STORAGE_KEYS.theme)).toBe("light");
-    expect(screen.getByRole("button", { name: "Mudar para o tema escuro" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Switch to the dark theme" })).toBeTruthy();
   });
 
   it("keeps the saved theme after the app reloads", () => {
     const first = render(<ThemeToggle />);
-    fireEvent.click(screen.getByRole("button", { name: "Mudar para o tema claro" }));
+    fireEvent.click(screen.getByRole("button", { name: "Switch to the light theme" }));
     first.unmount();
     root.removeAttribute("data-theme");
 
@@ -84,7 +118,7 @@ describe("ThemeToggle", () => {
     render(<ThemeToggle />);
 
     expect(root.getAttribute("data-theme")).toBe("light");
-    expect(screen.getByRole("button", { name: "Mudar para o tema escuro" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Switch to the dark theme" })).toBeTruthy();
   });
 
   it("stays in sync when the theme changes elsewhere", () => {
@@ -97,7 +131,7 @@ describe("ThemeToggle", () => {
 
     act(() => setTheme("light"));
 
-    expect(screen.getByRole("button", { name: "Mudar para o tema escuro" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Switch to the dark theme" })).toBeTruthy();
     expect(screen.getByRole("button", { name: "Escuro" })).toBeTruthy();
   });
 });
@@ -105,7 +139,7 @@ describe("ThemeToggle", () => {
 describe("TransparencyToggle", () => {
   it("turns glass solid, says so through its pressed state and remembers it", () => {
     render(<TransparencyToggle />);
-    const button = screen.getByRole("button", { name: "Reduzir transparência" });
+    const button = screen.getByRole("button", { name: "Reduce transparency" });
     expect(button.getAttribute("aria-pressed")).toBe("false");
 
     fireEvent.click(button);
@@ -123,7 +157,7 @@ describe("TransparencyToggle", () => {
     applyStoredAppearance();
     render(<TransparencyToggle />);
 
-    fireEvent.click(screen.getByRole("button", { name: "Reduzir transparência" }));
+    fireEvent.click(screen.getByRole("button", { name: "Reduce transparency" }));
 
     expect(root.getAttribute("data-theme")).toBe("light");
   });

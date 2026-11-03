@@ -44,5 +44,8 @@ jobs:
       - name: Types as an app sees them
         run: npm run test:types
 
+      - name: Files as an app receives them
+        run: npm run test:package
+
       - name: Build Storybook
         run: npm run build-storybook

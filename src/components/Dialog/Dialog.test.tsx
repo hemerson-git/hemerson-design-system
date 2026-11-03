@@ -62,7 +62,7 @@ describe("Dialog", () => {
   it("keeps Tab inside the dialog in both directions", () => {
     render(<Example />);
     openDialog();
-    const close = screen.getByRole("button", { name: "Fechar" });
+    const close = screen.getByRole("button", { name: "Close" });
     const confirm = screen.getByRole("button", { name: "Excluir" });
 
     confirm.focus();
