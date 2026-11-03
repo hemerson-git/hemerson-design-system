@@ -56,9 +56,12 @@ export function Dialog({
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
 
-    const focusables = panel.current?.querySelectorAll<HTMLElement>(FOCUSABLE) ?? [];
-    const target = initialFocus === "panel" || focusables.length === 0 ? panel.current : focusables[0];
-    target?.focus();
+    // A control inside that already took focus, with autoFocus, keeps it
+    if (!panel.current?.contains(document.activeElement)) {
+      const focusables = panel.current?.querySelectorAll<HTMLElement>(FOCUSABLE) ?? [];
+      const target = initialFocus === "panel" || focusables.length === 0 ? panel.current : focusables[0];
+      target?.focus();
+    }
 
     function onKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") {

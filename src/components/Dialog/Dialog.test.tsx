@@ -59,6 +59,26 @@ describe("Dialog", () => {
     expect(screen.getByRole("dialog").contains(document.activeElement)).toBe(true);
   });
 
+  it("leaves focus on a control inside that has autoFocus", () => {
+    render(
+      <Dialog open onClose={() => {}} title="Search">
+        <input aria-label="Search" autoFocus />
+      </Dialog>
+    );
+
+    expect(document.activeElement).toBe(screen.getByRole("textbox", { name: "Search" }));
+  });
+
+  it("starts on the first control when nothing inside has focus yet", () => {
+    render(
+      <Dialog open onClose={() => {}} title="Search">
+        <input aria-label="Search" />
+      </Dialog>
+    );
+
+    expect(document.activeElement).toBe(screen.getByRole("button", { name: "Close" }));
+  });
+
   it("keeps Tab inside the dialog in both directions", () => {
     render(<Example />);
     openDialog();
