@@ -1212,6 +1212,16 @@ html[data-transparency="reduced"] .hds-glass::before {
   opacity: 1;
 }
 
+/* Partly checked (the input's indeterminate state): the box half filled on the diagonal, no check */
+.hds-checkbox-input:indeterminate + .hds-checkbox-box {
+  border-color: var(--accent-fill);
+  background: linear-gradient(to top right, var(--accent-fill) calc(50% - 0.5px), var(--surface-sunken) calc(50% + 0.5px));
+}
+
+.hds-checkbox-input:indeterminate + .hds-checkbox-box .hds-icon {
+  opacity: 0;
+}
+
 .hds-checkbox-input:focus-visible + .hds-checkbox-box {
   outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
