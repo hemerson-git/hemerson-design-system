@@ -1,5 +1,11 @@
 # @hemerson/design-system
 
+## 0.12.0
+
+### Minor Changes
+
+- [#25](https://github.com/hemerson-git/hemerson-design-system/pull/25) [`31752ea`](https://github.com/hemerson-git/hemerson-design-system/commit/31752ea318090ca5e35db80831f0f151fec87cdd) Thanks [@hemerson-git](https://github.com/hemerson-git)! - Checkbox takes `indeterminate`: partly checked, drawn as a box half filled on the diagonal with no check, and read out as mixed. Plain markup with the `hds-checkbox-*` classes gets the same look from the input's own indeterminate state.
+
 ## 0.11.1
 
 ### Patch Changes
