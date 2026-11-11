@@ -23,3 +23,8 @@ export const WithHint: Story = {
 export const Disabled: Story = {
   args: { label: "Indisponível", disabled: true },
 };
+
+/** Some of what it stands for is checked: half filled on the diagonal, read out as mixed. */
+export const PartlyChecked: Story = {
+  args: { label: "Parcelas pagas", hint: "2 de 3", indeterminate: true },
+};
